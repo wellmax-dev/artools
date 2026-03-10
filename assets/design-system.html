@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fusion Design System 2.0</title>
+
+  <script src="../lumina-video/assets/resource_3fa48481346f.js"></script>
+  <script src="../canvas-visual.aura.build/assets/iconify_654a1ef798a3.js"></script>
+  <script src="../lumina-video/assets/lucide_latest_2eebd0ebe8c2.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="../canvas-visual.aura.build/assets/css2_5dc1420882f5.css" />
+  <link rel="stylesheet" href="../lumina-video/assets/css2_2832c0ff631d.css" />
+
+  <style>
+    /* ── ANIMATIONS ── */
+    @keyframes fadeSlideIn { 0% { opacity: 0; transform: translateY(30px); filter: blur(8px); } 100% { opacity: 1; transform: translateY(0); filter: blur(0px); } }
+    @keyframes beam-drop { 0% { transform: translateY(-100%); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(100%); opacity: 0; } }
+    @keyframes beam-slide { 0% { transform: translateX(-100%); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateX(100%); opacity: 0; } }
+    @keyframes beam-fall { 0% { transform: translateY(-100%); opacity: 0; } 5% { opacity: 0.5; } 50% { opacity: 1; } 95% { opacity: 0.5; } 100% { transform: translateY(120vh); opacity: 0; } }
+    @keyframes floating-points { 0% { transform: translateY(0); } 85% { opacity: 0; } 100% { transform: translateY(-55px); opacity: 0; } }
+    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    @keyframes shimmer { from { transform: translateX(-100%) skewX(-15deg); } to { transform: translateX(200%) skewX(-15deg); } }
+    @keyframes floatY { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+    @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 0 rgba(249, 115, 22, 0); } 50% { box-shadow: 0 0 40px rgba(249, 115, 22, 0.25); } }
+
+    /* ── SCROLL ANIMATIONS ── */
+    .animate-on-scroll { animation-play-state: paused !important; }
+    .animate-on-scroll.animate { animation-play-state: running !important; }
+
+    /* ── GRID BG ── */
+    .grid-bg {
+      background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse at center, black 40%, transparent 70%);
+      -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 70%);
+    }
+
+    /* ── BEAM BORDERS ── */
+    .beam-border-v { position: absolute; top: 0; bottom: 0; left: 0; width: 1px; background: rgba(255,255,255,0.05); overflow: hidden; z-index: 10; }
+    .beam-border-v::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent, #F97316, transparent); transform: translateY(-100%); animation: beam-drop 5s cubic-bezier(0.4, 0, 0.2, 1) infinite; opacity: 0.7; }
+    .beam-border-v.right { left: auto; right: 0; }
+    .beam-border-h { position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: rgba(255,255,255,0.05); overflow: hidden; z-index: 10; }
+    .beam-border-h::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to right, transparent, #F97316, transparent); transform: translateX(-100%); animation: beam-slide 7s cubic-bezier(0.4, 0, 0.2, 1) infinite; animation-delay: 2.5s; opacity: 0.7; }
+    .beam-border-h.top { bottom: auto; top: 0; }
+
+    /* ── FLOATING CARD ── */
+    .floating-card { transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), z-index 0s; will-change: transform; }
+    .floating-card:hover { transform: scale(1.1) translateY(-10px) !important; z-index: 50; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); border-color: rgba(249, 115, 22, 0.3); }
+
+    /* ── BTN WRAPPER (Canvas) ── */
+    .btn-wrapper:hover .btn { background-color: #F97316; color: #000; border-color: #F97316; }
+    .btn { transition: all 0.3s ease; }
+
+    /* ── BUTTON CUSTOM (Lumina Particles) ── */
+    .button-custom { cursor: pointer; position: relative; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; transition: all 0.25s ease; background: radial-gradient(65.28% 65.28% at 50% 100%, rgba(251, 191, 36, 0.8) 0%, rgba(251, 191, 36, 0) 100%), linear-gradient(0deg, #ea580c, #ea580c); border-radius: 9999px; border: none; padding: 10px 24px; min-height: 44px; }
+    .button-custom::before { content: ""; position: absolute; inset: 1px; background: linear-gradient(177.95deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 100%); border-radius: 9999px; z-index: 0; }
+    .button-custom::after { content: ""; position: absolute; inset: 2px; background: radial-gradient(65.28% 65.28% at 50% 100%, rgba(251, 191, 36, 0.8) 0%, rgba(251, 191, 36, 0) 100%), linear-gradient(0deg, #ea580c, #ea580c); border-radius: 9999px; z-index: 0; }
+    .inner { z-index: 2; gap: 6px; position: relative; color: white; display: inline-flex; align-items: center; justify-content: center; font-size: 0.875rem; font-weight: 500; }
+    .points_wrapper { overflow: hidden; width: 100%; height: 100%; pointer-events: none; position: absolute; z-index: 1; }
+    .points_wrapper .point { bottom: -10px; position: absolute; animation: floating-points infinite ease-in-out; pointer-events: none; width: 2px; height: 2px; background-color: #fff; border-radius: 9999px; }
+    .points_wrapper .point:nth-child(1) { left: 10%; opacity: 1; animation-duration: 2.35s; animation-delay: 0.2s; }
+    .points_wrapper .point:nth-child(2) { left: 30%; opacity: 0.7; animation-duration: 2.5s; animation-delay: 0.5s; }
+    .points_wrapper .point:nth-child(3) { left: 25%; opacity: 0.8; animation-duration: 2.2s; animation-delay: 0.1s; }
+    .points_wrapper .point:nth-child(4) { left: 44%; opacity: 0.6; animation-duration: 2.05s; }
+    .points_wrapper .point:nth-child(5) { left: 50%; opacity: 1; animation-duration: 1.9s; }
+    .points_wrapper .point:nth-child(6) { left: 75%; opacity: 0.5; animation-duration: 1.5s; animation-delay: 1.5s; }
+    .points_wrapper .point:nth-child(7) { left: 88%; opacity: 0.9; animation-duration: 2.2s; animation-delay: 0.2s; }
+
+    /* ── BEAM FALL ── */
+    .animate-beam-1 { animation: beam-fall 6s linear infinite; }
+    .animate-beam-2 { animation: beam-fall 8s linear infinite; animation-delay: 2s; }
+    .animate-beam-3 { animation: beam-fall 7s linear infinite; animation-delay: 4s; }
+
+    /* ── CARD STACK ── */
+    .card-stack-item { transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease, z-index 0s; }
+
+    /* ── FLASHLIGHT CARD ── */
+    .flashlight-card { background: rgba(255, 255, 255, 0.01); }
+    .flashlight-card::before { content: ""; position: absolute; inset: 0; background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, 0.08), transparent 40%); opacity: 0; transition: opacity 0.5s; pointer-events: none; z-index: 2; border-radius: inherit; }
+    .flashlight-card:hover::before { opacity: 1; }
+
+    /* ── MARQUEE ── */
+    .animate-marquee { animation: marquee 40s linear infinite; }
+
+    /* ── SMOOTH SCROLL ── */
+    html { scroll-behavior: smooth; }
+
+    /* ── SELECTION ── */
+    ::selection { background: #F97316; color: #000; }
+  </style>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+          colors: { primary: '#F97316', surface: '#0A0A0A', deep: '#050505' },
+          rotate: { 'x-12': '12deg', 'y-12': '12deg', 'z-2': '2deg' },
+          perspective: { '1000': '1000px', '1500': '1500px', '2000': '2000px' },
+          transformOrigin: { 'center-bottom': 'center bottom' },
+        }
+      },
+      plugins: [
+        function({ addUtilities }) {
+          addUtilities({
+            '.perspective-1000': { perspective: '1000px' },
+            '.perspective-1500': { perspective: '1500px' },
+            '.perspective-2000': { perspective: '2000px' },
+            '.preserve-3d': { 'transform-style': 'preserve-3d' },
+            '.rotate-x-12': { transform: 'rotateX(12deg)' },
+            '.rotate-y-6': { transform: 'rotateY(6deg)' },
+            '.-rotate-y-6': { transform: 'rotateY(-6deg)' },
+            '.rotate-y-12': { transform: 'rotateY(12deg)' },
+            '.-rotate-y-12': { transform: 'rotateY(-12deg)' },
+            '.rotate-z-2': { transform: 'rotate(2deg)' },
+            '.-rotate-z-2': { transform: 'rotate(-2deg)' },
+            '.rotate-z-3': { transform: 'rotate(3deg)' },
+            '.-rotate-z-3': { transform: 'rotate(-3deg)' },
+            '.backface-hidden': { 'backface-visibility': 'hidden' },
+          })
+        }
+      ]
+    }
+  </script>
+</head>
+<body class="bg-[#050505] text-neutral-300 font-sans antialiased selection:bg-[#F97316] selection:text-black overflow-x-hidden">
+
+  <!-- ═══════════════ AMBIENT ORANGE BG ═══════════════ -->
+  <div class="fixed inset-0 -z-20 pointer-events-none" style="mask-image: linear-gradient(to bottom, transparent, black 0%, black 80%, transparent); -webkit-mask-image: linear-gradient(to bottom, transparent, black 0%, black 80%, transparent);">
+    <div class="absolute top-[-20%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-[radial-gradient(circle,rgba(249,115,22,0.12)_0%,transparent_70%)] animate-[floatY_12s_ease-in-out_infinite]"></div>
+    <div class="absolute bottom-[-10%] right-[-15%] w-[50vw] h-[50vw] rounded-full bg-[radial-gradient(circle,rgba(234,88,12,0.08)_0%,transparent_65%)] animate-[floatY_16s_ease-in-out_infinite_reverse]"></div>
+    <div class="absolute top-[40%] left-[50%] -translate-x-1/2 w-[40vw] h-[40vw] rounded-full bg-[radial-gradient(circle,rgba(251,191,36,0.06)_0%,transparent_60%)] animate-[floatY_20s_ease-in-out_infinite_2s]"></div>
+  </div>
+
+  <!-- ═══════════════ NAVBAR ═══════════════ -->
+  <nav class="fixed top-0 w-full z-[100] bg-black/80 backdrop-blur-md border-b border-white/10 px-6 py-4 flex justify-between items-center">
+    <a href="#hero" class="flex items-center gap-3 group">
+      <div class="w-5 h-5 rounded-sm bg-[#F97316] group-hover:shadow-[0_0_16px_rgba(249,115,22,0.5)] transition-shadow"></div>
+      <span class="text-white text-sm font-semibold tracking-tight">Fusion Design System</span>
+    </a>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="#hero" class="text-xs uppercase tracking-widest text-neutral-500 hover:text-white transition-colors">Hero</a>
+      <a href="#typography" class="text-xs uppercase tracking-widest text-neutral-500 hover:text-white transition-colors">Tipografia</a>
+      <a href="#colors" class="text-xs uppercase tracking-widest text-neutral-500 hover:text-white transition-colors">Cores</a>
+      <a href="#components" class="text-xs uppercase tracking-widest text-neutral-500 hover:text-white transition-colors">Componentes</a>
+      <a href="#icons" class="text-xs uppercase tracking-widest text-neutral-500 hover:text-white transition-colors">Ícones</a>
+      <a href="#animations" class="text-xs uppercase tracking-widest text-neutral-500 hover:text-white transition-colors">Animações</a>
+    </div>
+  </nav>
+
+
+  <!-- ╔═══════════════════════════════════════════════════════════════╗ -->
+  <!-- ║  SECTION 1 — HERO                                           ║ -->
+  <!-- ╚═══════════════════════════════════════════════════════════════╝ -->
+  <section id="hero" class="relative min-h-screen flex items-center overflow-hidden">
+    <!-- BG image -->
+    <div class="absolute inset-0 -z-10">
+      <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/2b5079f4-4ddd-433b-a936-fc8f7d_7da21e998877.webp" alt="" class="w-full h-full object-cover fixed top-0 left-0 opacity-20" style="mix-blend-mode: luminosity;" />
+      <div class="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505]"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-[#050505] via-transparent to-[#050505]/80"></div>
+    </div>
+    <!-- Grid BG -->
+    <div class="absolute inset-0 grid-bg -z-[5]"></div>
+    <!-- Falling beams -->
+    <div class="absolute inset-0 -z-[4] grid grid-cols-5 pointer-events-none">
+      <div class="relative overflow-hidden"><div class="absolute w-[1px] h-32 bg-gradient-to-b from-transparent via-orange-500/40 to-transparent animate-beam-1"></div></div>
+      <div class="relative overflow-hidden"><div class="absolute w-[1px] h-24 bg-gradient-to-b from-transparent via-white/20 to-transparent animate-beam-2 left-1/2"></div></div>
+      <div class="relative overflow-hidden"><div class="absolute w-[1px] h-40 bg-gradient-to-b from-transparent via-orange-500/30 to-transparent animate-beam-3 left-1/3"></div></div>
+      <div class="relative overflow-hidden"><div class="absolute w-[1px] h-20 bg-gradient-to-b from-transparent via-white/15 to-transparent animate-beam-1 left-2/3" style="animation-delay:1s;"></div></div>
+      <div class="relative overflow-hidden"><div class="absolute w-[1px] h-36 bg-gradient-to-b from-transparent via-orange-500/25 to-transparent animate-beam-2 left-1/4" style="animation-delay:3s;"></div></div>
+    </div>
+
+    <!-- Hero content -->
+    <div class="relative z-10 w-full max-w-[1400px] mx-auto px-6 md:px-12 pt-32 pb-20 grid lg:grid-cols-2 gap-16 items-center">
+      <!-- Left -->
+      <div>
+        <div class="animate-on-scroll" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.1s both;">
+          <div class="flex items-center gap-3 mb-8">
+            <div class="w-2 h-2 rounded-full bg-[#F97316] shadow-[0_0_12px_rgba(249,115,22,0.6)]"></div>
+            <span class="text-xs uppercase tracking-[0.25em] text-neutral-500 font-medium">Design System 2.0</span>
+          </div>
+        </div>
+
+        <h1 class="animate-on-scroll text-6xl md:text-7xl lg:text-8xl leading-[0.9] tracking-tighter font-medium mb-8" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.2s both;">
+          <span class="text-white">Build</span><br>
+          <span class="text-white">Visual</span><br>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-neutral-200 to-neutral-500">Systems.</span>
+        </h1>
+
+        <p class="animate-on-scroll text-lg text-white/60 max-w-lg mb-10 leading-relaxed" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.35s both;">
+          Um sistema de design completo com componentes cinematográficos, tipografia fluida e superfícies de vidro. Feito para experiências digitais imersivas.
+        </p>
+
+        <div class="animate-on-scroll flex flex-wrap items-center gap-4" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.5s both;">
+          <!-- Particle button -->
+          <button class="button-custom">
+            <div class="points_wrapper">
+              <div class="point"></div><div class="point"></div><div class="point"></div>
+              <div class="point"></div><div class="point"></div><div class="point"></div><div class="point"></div>
+            </div>
+            <span class="inner">
+              <i data-lucide="sparkles" class="w-4 h-4"></i>
+              Explorar Sistema
+            </span>
+          </button>
+
+          <!-- Canvas brutalist button -->
+          <div class="btn-wrapper relative group">
+            <div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-white/20 group-hover:border-[#F97316] transition-colors"></div>
+            <div class="absolute top-0 right-0 w-2 h-2 border-t border-r border-white/20 group-hover:border-[#F97316] transition-colors"></div>
+            <div class="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-white/20 group-hover:border-[#F97316] transition-colors"></div>
+            <div class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-white/20 group-hover:border-[#F97316] transition-colors"></div>
+            <a href="#components" class="btn inline-flex items-center gap-2 px-6 py-3 border border-white/10 text-sm text-white bg-transparent">
+              <span>Ver Componentes</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right — Floating cards -->
+      <div class="relative h-[500px] hidden lg:block">
+        <div class="beam-border-v" style="left: 30%;"></div>
+        <div class="beam-border-h" style="top: 40%; bottom: auto;"></div>
+
+        <div class="floating-card animate-on-scroll absolute top-0 right-0 w-72 rounded-xl border border-white/10 overflow-hidden shadow-2xl grayscale hover:grayscale-0 transition-all duration-500" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.3s both; transform: rotate(3deg);">
+          <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/2b5079f4-4ddd-433b-a936-fc8f7d_8dea34ffc1ee.webp" alt="Hero card" class="w-full h-48 object-cover" />
+          <div class="p-4 bg-[#0A0A0A]">
+            <p class="text-xs text-neutral-500 font-mono">hero-card.webp</p>
+          </div>
+        </div>
+
+        <div class="floating-card animate-on-scroll absolute top-32 left-0 w-64 rounded-xl border border-white/10 overflow-hidden shadow-2xl grayscale hover:grayscale-0 transition-all duration-500" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.5s both; transform: rotate(-2deg);">
+          <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/6e8af32c-e155-4b33-9e0a-eb91a9_c1c7ef5e7858.webp" alt="Card 2" class="w-full h-40 object-cover" />
+          <div class="p-4 bg-[#0A0A0A]">
+            <p class="text-xs text-neutral-500 font-mono">feature-card.webp</p>
+          </div>
+        </div>
+
+        <div class="floating-card animate-on-scroll absolute bottom-4 right-12 w-60 rounded-xl border border-white/10 overflow-hidden shadow-2xl grayscale hover:grayscale-0 transition-all duration-500" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.7s both; transform: rotate(-3deg) translateY(10px);">
+          <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/92f79571-c9ab-4ba6-827b-8845c8_9ee0df95473e.webp" alt="Feature image" class="w-full h-36 object-cover" />
+          <div class="p-4 bg-[#0A0A0A]">
+            <p class="text-xs text-neutral-500 font-mono">visual-asset.webp</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom gradient -->
+    <div class="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#050505] to-transparent z-20 pointer-events-none"></div>
+  </section>
+
+
+  <!-- ╔═══════════════════════════════════════════════════════════════╗ -->
+  <!-- ║  SECTION 2 — TYPOGRAPHY                                     ║ -->
+  <!-- ╚═══════════════════════════════════════════════════════════════╝ -->
+  <section id="typography" class="relative border-t border-white/5 py-24">
+    <div class="beam-border-v"></div>
+
+    <div class="max-w-[1400px] mx-auto px-6 md:px-12">
+      <!-- Header -->
+      <div class="mb-20">
+        <p class="animate-on-scroll text-xs font-mono uppercase tracking-[0.25em] text-neutral-500 mb-4" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.1s both;">02 / Tipografia</p>
+        <h2 class="animate-on-scroll text-5xl md:text-6xl font-medium tracking-tighter text-white" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.2s both;">Escala Tipográfica</h2>
+        <p class="animate-on-scroll text-white/40 text-lg mt-4 max-w-xl" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.3s both;">Uma escala modulada de tipos para criar hierarquia, ritmo e fluidez visual em todas as superfícies.</p>
+      </div>
+
+      <!-- Type scale rows -->
+      <div class="space-y-0">
+        <!-- Display H1 -->
+        <div class="animate-on-scroll flashlight-card relative border-b border-white/5 py-8 grid md:grid-cols-[160px_1fr_200px] gap-6 items-end" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.1s both;">
+          <div>
+            <span class="text-xs font-mono uppercase tracking-widest text-neutral-500">Display H1</span>
+          </div>
+          <div>
+            <p class="text-[96px] leading-[0.9] tracking-tighter font-medium text-white">Ag</p>
+          </div>
+          <div class="text-xs font-mono text-neutral-600 space-y-1">
+            <p>Inter / sans-serif</p>
+            <p>font-weight: 500</p>
+            <p>font-size: 96px</p>
+            <p>line-height: 0.9</p>
+            <p>letter-spacing: -0.04em</p>
+          </div>
+        </div>
+
+        <!-- H2 -->
+        <div class="animate-on-scroll flashlight-card relative border-b border-white/5 py-8 grid md:grid-cols-[160px_1fr_200px] gap-6 items-end" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.15s both;">
+          <div><span class="text-xs font-mono uppercase tracking-widest text-neutral-500">Heading H2</span></div>
+          <div><p class="text-[72px] leading-[0.9] tracking-tighter font-medium text-white">Ag</p></div>
+          <div class="text-xs font-mono text-neutral-600 space-y-1">
+            <p>Inter / sans-serif</p><p>font-weight: 500</p><p>font-size: 72px</p><p>line-height: 0.9</p><p>letter-spacing: -0.04em</p>
+          </div>
+        </div>
+
+        <!-- H3 -->
+        <div class="animate-on-scroll flashlight-card relative border-b border-white/5 py-8 grid md:grid-cols-[160px_1fr_200px] gap-6 items-end" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.2s both;">
+          <div><span class="text-xs font-mono uppercase tracking-widest text-neutral-500">Heading H3</span></div>
+          <div><p class="text-[48px] leading-[1] tracking-tight font-medium text-white">Ag</p></div>
+          <div class="text-xs font-mono text-neutral-600 space-y-1">
+            <p>Inter / sans-serif</p><p>font-weight: 500</p><p>font-size: 48px</p><p>line-height: 1.0</p><p>letter-spacing: -0.02em</p>
+          </div>
+        </div>
+
+        <!-- H4 -->
+        <div class="animate-on-scroll flashlight-card relative border-b border-white/5 py-8 grid md:grid-cols-[160px_1fr_200px] gap-6 items-end" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.25s both;">
+          <div><span class="text-xs font-mono uppercase tracking-widest text-neutral-500">Heading H4</span></div>
+          <div><p class="text-[30px] leading-[1.1] tracking-tight font-medium text-white">Ag — Heading level four</p></div>
+          <div class="text-xs font-mono text-neutral-600 space-y-1">
+            <p>Inter / sans-serif</p><p>font-weight: 500</p><p>font-size: 30px</p><p>line-height: 1.1</p><p>letter-spacing: -0.01em</p>
+          </div>
+        </div>
+
+        <!-- Body Large -->
+        <div class="animate-on-scroll flashlight-card relative border-b border-white/5 py-8 grid md:grid-cols-[160px_1fr_200px] gap-6 items-end" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.3s both;">
+          <div><span class="text-xs font-mono uppercase tracking-widest text-neutral-500">Body Large</span></div>
+          <div><p class="text-lg text-white/60 leading-relaxed max-w-lg">Um sistema de design completo com componentes cinematográficos, tipografia fluida e superfícies de vidro.</p></div>
+          <div class="text-xs font-mono text-neutral-600 space-y-1">
+            <p>Inter / sans-serif</p><p>font-weight: 400</p><p>font-size: 18px</p><p>line-height: 1.625</p><p>letter-spacing: 0</p>
+          </div>
+        </div>
+
+        <!-- Body Medium -->
+        <div class="animate-on-scroll flashlight-card relative border-b border-white/5 py-8 grid md:grid-cols-[160px_1fr_200px] gap-6 items-end" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.35s both;">
+          <div><span class="text-xs font-mono uppercase tracking-widest text-neutral-500">Body Medium</span></div>
+          <div><p class="text-sm text-neutral-400 leading-relaxed max-w-lg">Texto de corpo padrão utilizado em parágrafos, descrições de cards e elementos de interface com leitura contínua.</p></div>
+          <div class="text-xs font-mono text-neutral-600 space-y-1">
+            <p>Inter / sans-serif</p><p>font-weight: 400</p><p>font-size: 14px</p><p>line-height: 1.625</p><p>letter-spacing: 0</p>
+          </div>
+        </div>
+
+        <!-- Body Small -->
+        <div class="animate-on-scroll flashlight-card relative border-b border-white/5 py-8 grid md:grid-cols-[160px_1fr_200px] gap-6 items-end" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.4s both;">
+          <div><span class="text-xs font-mono uppercase tracking-widest text-neutral-500">Body Small</span></div>
+          <div><p class="text-xs text-neutral-500 leading-relaxed max-w-lg">Texto auxiliar para legendas, notas de rodapé, metadados e informações complementares com menor hierarquia visual.</p></div>
+          <div class="text-xs font-mono text-neutral-600 space-y-1">
+            <p>Inter / sans-serif</p><p>font-weight: 400</p><p>font-size: 12px</p><p>line-height: 1.5</p><p>letter-spacing: 0</p>
+          </div>
+        </div>
+
+        <!-- Gradient Text -->
+        <div class="animate-on-scroll flashlight-card relative border-b border-white/5 py-8 grid md:grid-cols-[160px_1fr_200px] gap-6 items-end" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.45s both;">
+          <div><span class="text-xs font-mono uppercase tracking-widest text-neutral-500">Gradient Text</span></div>
+          <div><p class="text-5xl font-medium tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white via-neutral-200 to-neutral-500">Texto Gradiente</p></div>
+          <div class="text-xs font-mono text-neutral-600 space-y-1">
+            <p>text-transparent</p><p>bg-clip-text</p><p>bg-gradient-to-r</p><p>from-white via-neutral-200</p><p>to-neutral-500</p>
+          </div>
+        </div>
+
+        <!-- Uppercase Label -->
+        <div class="animate-on-scroll flashlight-card relative border-b border-white/5 py-8 grid md:grid-cols-[160px_1fr_200px] gap-6 items-end" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.5s both;">
+          <div><span class="text-xs font-mono uppercase tracking-widest text-neutral-500">Uppercase Label</span></div>
+          <div><p class="text-xs uppercase tracking-[0.25em] text-neutral-500 font-medium">Label de Seção Padrão</p></div>
+          <div class="text-xs font-mono text-neutral-600 space-y-1">
+            <p>Inter / sans-serif</p><p>font-weight: 500</p><p>font-size: 12px</p><p>text-transform: uppercase</p><p>letter-spacing: 0.25em</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Font Stack Card -->
+      <div class="animate-on-scroll mt-16 grid md:grid-cols-4 gap-4" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.55s both;">
+        <div class="border border-white/5 bg-[#0A0A0A] rounded-xl p-6">
+          <p class="text-xs font-mono uppercase tracking-widest text-[#F97316] mb-3">Primária</p>
+          <p class="text-2xl text-white font-medium mb-1">Inter</p>
+          <p class="text-xs text-neutral-500">Variable weight 100–900</p>
+        </div>
+        <div class="border border-white/5 bg-[#0A0A0A] rounded-xl p-6">
+          <p class="text-xs font-mono uppercase tracking-widest text-[#F97316] mb-3">Fallback</p>
+          <p class="text-2xl text-white font-medium mb-1" style="font-family: system-ui;">system-ui</p>
+          <p class="text-xs text-neutral-500">Sistema nativo do OS</p>
+        </div>
+        <div class="border border-white/5 bg-[#0A0A0A] rounded-xl p-6">
+          <p class="text-xs font-mono uppercase tracking-widest text-[#F97316] mb-3">Mono</p>
+          <p class="text-2xl text-white font-medium font-mono mb-1">Mono</p>
+          <p class="text-xs text-neutral-500">Para código e labels</p>
+        </div>
+        <div class="border border-white/5 bg-[#0A0A0A] rounded-xl p-6">
+          <p class="text-xs font-mono uppercase tracking-widest text-[#F97316] mb-3">Loading</p>
+          <p class="text-2xl text-white font-medium mb-1">swap</p>
+          <p class="text-xs text-neutral-500">font-display: swap</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ╔═══════════════════════════════════════════════════════════════╗ -->
+  <!-- ║  SECTION 3 — COLORS & SURFACES                             ║ -->
+  <!-- ╚═══════════════════════════════════════════════════════════════╝ -->
+  <section id="colors" class="relative border-t border-white/5 py-24">
+    <div class="beam-border-v right" style="right: 0; left: auto;"></div>
+    <div class="beam-border-h top" style="top: 0; bottom: auto;"></div>
+    <div class="absolute inset-0 grid-bg -z-[1]"></div>
+
+    <div class="max-w-[1400px] mx-auto px-6 md:px-12">
+      <!-- Header -->
+      <div class="mb-20">
+        <p class="animate-on-scroll text-xs font-mono uppercase tracking-[0.25em] text-neutral-500 mb-4" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.1s both;">03 / Cores & Superfícies</p>
+        <h2 class="animate-on-scroll text-5xl md:text-6xl font-medium tracking-tighter text-white" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.2s both;">Paleta de Cores</h2>
+        <p class="animate-on-scroll text-white/40 text-lg mt-4 max-w-xl" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.3s both;">Cores funcionais com variantes de opacidade, gradientes e superfícies de vidro para interfaces escuras.</p>
+      </div>
+
+      <!-- Color swatches -->
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
+        <!-- Primary -->
+        <div class="animate-on-scroll flashlight-card relative border border-white/5 rounded-xl overflow-hidden group" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.1s both;">
+          <div class="h-32 bg-[#F97316]"></div>
+          <div class="p-5 bg-[#0A0A0A]">
+            <p class="text-sm text-white font-medium mb-1">Orange</p>
+            <p class="text-xs font-mono text-neutral-500 mb-3">#F97316</p>
+            <div class="space-y-1 text-[10px] font-mono text-neutral-600">
+              <p>RGB: 249, 115, 22</p>
+              <p>HSL: 25°, 95%, 53%</p>
+              <p>Papel: Primary / Accent</p>
+              <p>Uso: CTAs, destaques, beams</p>
+              <p>Contraste: 4.5:1 sobre #050505</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Background -->
+        <div class="animate-on-scroll flashlight-card relative border border-white/5 rounded-xl overflow-hidden group" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.15s both;">
+          <div class="h-32 bg-[#050505] border-b border-white/5"></div>
+          <div class="p-5 bg-[#0A0A0A]">
+            <p class="text-sm text-white font-medium mb-1">Deep Black</p>
+            <p class="text-xs font-mono text-neutral-500 mb-3">#050505</p>
+            <div class="space-y-1 text-[10px] font-mono text-neutral-600">
+              <p>RGB: 5, 5, 5</p>
+              <p>HSL: 0°, 0%, 2%</p>
+              <p>Papel: Background</p>
+              <p>Uso: Body, base de todas as seções</p>
+              <p>Contraste: Base primária</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Surface -->
+        <div class="animate-on-scroll flashlight-card relative border border-white/5 rounded-xl overflow-hidden group" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.2s both;">
+          <div class="h-32 bg-[#0A0A0A] border-b border-white/5"></div>
+          <div class="p-5 bg-[#0A0A0A]">
+            <p class="text-sm text-white font-medium mb-1">Surface</p>
+            <p class="text-xs font-mono text-neutral-500 mb-3">#0A0A0A</p>
+            <div class="space-y-1 text-[10px] font-mono text-neutral-600">
+              <p>RGB: 10, 10, 10</p>
+              <p>HSL: 0°, 0%, 4%</p>
+              <p>Papel: Elevated surface</p>
+              <p>Uso: Cards, modais, painéis</p>
+              <p>Contraste: Elevação sutil</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- White -->
+        <div class="animate-on-scroll flashlight-card relative border border-white/5 rounded-xl overflow-hidden group" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.25s both;">
+          <div class="h-32 bg-white"></div>
+          <div class="p-5 bg-[#0A0A0A]">
+            <p class="text-sm text-white font-medium mb-1">White</p>
+            <p class="text-xs font-mono text-neutral-500 mb-3">#FFFFFF</p>
+            <div class="space-y-1 text-[10px] font-mono text-neutral-600">
+              <p>RGB: 255, 255, 255</p>
+              <p>HSL: 0°, 0%, 100%</p>
+              <p>Papel: Text Primary</p>
+              <p>Uso: Headings, texto principal</p>
+              <p>Contraste: 19.4:1 sobre #050505</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- White/60 -->
+        <div class="animate-on-scroll flashlight-card relative border border-white/5 rounded-xl overflow-hidden group" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.3s both;">
+          <div class="h-32 bg-[#050505] flex items-center justify-center"><span class="text-white/60 text-2xl">Aa</span></div>
+          <div class="p-5 bg-[#0A0A0A]">
+            <p class="text-sm text-white font-medium mb-1">White / 60%</p>
+            <p class="text-xs font-mono text-neutral-500 mb-3">rgba(255,255,255,0.6)</p>
+            <div class="space-y-1 text-[10px] font-mono text-neutral-600">
+              <p>Papel: Text Secondary</p>
+              <p>Uso: Parágrafos, descrições</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Neutral-900 -->
+        <div class="animate-on-scroll flashlight-card relative border border-white/5 rounded-xl overflow-hidden group" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.35s both;">
+          <div class="h-32 bg-neutral-900"></div>
+          <div class="p-5 bg-[#0A0A0A]">
+            <p class="text-sm text-white font-medium mb-1">Neutral 900</p>
+            <p class="text-xs font-mono text-neutral-500 mb-3">#171717</p>
+            <div class="space-y-1 text-[10px] font-mono text-neutral-600">
+              <p>RGB: 23, 23, 23</p>
+              <p>HSL: 0°, 0%, 9%</p>
+              <p>Papel: Alt surface</p>
+              <p>Uso: Hover states, separadores</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- White/10 -->
+        <div class="animate-on-scroll flashlight-card relative border border-white/5 rounded-xl overflow-hidden group" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.4s both;">
+          <div class="h-32 bg-[#050505] border-b border-white/10 flex items-center justify-center"><div class="w-20 h-20 rounded-xl border border-white/10 bg-white/5"></div></div>
+          <div class="p-5 bg-[#0A0A0A]">
+            <p class="text-sm text-white font-medium mb-1">White / 10%</p>
+            <p class="text-xs font-mono text-neutral-500 mb-3">rgba(255,255,255,0.1)</p>
+            <div class="space-y-1 text-[10px] font-mono text-neutral-600">
+              <p>Papel: Glass / Border</p>
+              <p>Uso: Bordas, divisores, glass</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Orange gradient -->
+        <div class="animate-on-scroll flashlight-card relative border border-white/5 rounded-xl overflow-hidden group" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.45s both;">
+          <div class="h-32 bg-gradient-to-br from-orange-400 to-orange-600"></div>
+          <div class="p-5 bg-[#0A0A0A]">
+            <p class="text-sm text-white font-medium mb-1">Orange Gradient</p>
+            <p class="text-xs font-mono text-neutral-500 mb-3">from-orange-400 to-orange-600</p>
+            <div class="space-y-1 text-[10px] font-mono text-neutral-600">
+              <p>Papel: Accent gradient</p>
+              <p>Uso: Botões, badges, glow</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Opacity variants -->
+      <div class="animate-on-scroll mb-16" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.5s both;">
+        <h3 class="text-xl font-medium text-white mb-6">Variantes de Opacidade</h3>
+        <div class="flex flex-wrap gap-4">
+          <div class="text-center">
+            <div class="w-16 h-16 rounded-lg bg-white/5 border border-white/5 mb-2"></div>
+            <p class="text-[10px] font-mono text-neutral-600">white/5</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 rounded-lg bg-white/10 border border-white/5 mb-2"></div>
+            <p class="text-[10px] font-mono text-neutral-600">white/10</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 rounded-lg bg-white/20 border border-white/5 mb-2"></div>
+            <p class="text-[10px] font-mono text-neutral-600">white/20</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 rounded-lg bg-orange-500/10 border border-white/5 mb-2"></div>
+            <p class="text-[10px] font-mono text-neutral-600">orange/10</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 rounded-lg bg-orange-500/20 border border-white/5 mb-2"></div>
+            <p class="text-[10px] font-mono text-neutral-600">orange/20</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gradient showcase -->
+      <div class="animate-on-scroll" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.55s both;">
+        <h3 class="text-xl font-medium text-white mb-6">Gradientes</h3>
+        <div class="grid md:grid-cols-3 gap-4">
+          <div class="border border-white/5 rounded-xl overflow-hidden">
+            <div class="h-24 bg-gradient-to-r from-white to-transparent"></div>
+            <div class="p-4 bg-[#0A0A0A]"><p class="text-xs font-mono text-neutral-500">linear-gradient: white → transparent</p></div>
+          </div>
+          <div class="border border-white/5 rounded-xl overflow-hidden">
+            <div class="h-24" style="background: conic-gradient(from 0deg, #F97316, #fbbf24, #F97316);"></div>
+            <div class="p-4 bg-[#0A0A0A]"><p class="text-xs font-mono text-neutral-500">conic-gradient: orange (beam buttons)</p></div>
+          </div>
+          <div class="border border-white/5 rounded-xl overflow-hidden">
+            <div class="h-24 bg-gradient-to-b from-[#050505] via-transparent to-[#050505]"></div>
+            <div class="p-4 bg-[#0A0A0A]"><p class="text-xs font-mono text-neutral-500">vertical fade: deep → transparent → deep</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ╔═══════════════════════════════════════════════════════════════╗ -->
+  <!-- ║  SECTION 4 — UI COMPONENTS                                  ║ -->
+  <!-- ╚═══════════════════════════════════════════════════════════════╝ -->
+  <section id="components" class="relative border-t border-white/5 py-24">
+    <div class="beam-border-v"></div>
+    <div class="beam-border-v right" style="left:auto; right:0;"></div>
+    <div class="beam-border-h"></div>
+
+    <div class="max-w-[1400px] mx-auto px-6 md:px-12">
+      <!-- Header -->
+      <div class="mb-20">
+        <p class="animate-on-scroll text-xs font-mono uppercase tracking-[0.25em] text-neutral-500 mb-4" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.1s both;">04 / Componentes UI</p>
+        <h2 class="animate-on-scroll text-5xl md:text-6xl font-medium tracking-tighter text-white" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.2s both;">Biblioteca de Componentes</h2>
+        <p class="animate-on-scroll text-white/40 text-lg mt-4 max-w-xl" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.3s both;">Componentes reutilizáveis com animações, efeitos de luz e superfícies glassmorphism.</p>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-6">
+
+        <!-- ── BUTTONS ── -->
+        <!-- Primary particle button -->
+        <div class="animate-on-scroll border border-white/5 bg-[#0A0A0A] rounded-xl p-8" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.1s both;">
+          <p class="text-xs font-mono uppercase tracking-widest text-neutral-500 mb-6">Botão Primário — Partículas</p>
+          <div class="flex items-center justify-center py-8">
+            <button class="button-custom">
+              <div class="points_wrapper">
+                <div class="point"></div><div class="point"></div><div class="point"></div>
+                <div class="point"></div><div class="point"></div><div class="point"></div><div class="point"></div>
+              </div>
+              <span class="inner">
+                <i data-lucide="sparkles" class="w-4 h-4"></i>
+                Começar Agora
+              </span>
+            </button>
+          </div>
+          <p class="text-xs text-neutral-600 mt-4 font-mono">.button-custom + .points_wrapper</p>
+        </div>
+
+        <!-- Canvas brutalist button -->
+        <div class="animate-on-scroll border border-white/5 bg-[#0A0A0A] rounded-xl p-8" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.15s both;">
+          <p class="text-xs font-mono uppercase tracking-widest text-neutral-500 mb-6">Botão Canvas — Brutalista</p>
+          <div class="flex items-center justify-center py-8">
+            <div class="btn-wrapper relative group">
+              <div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-white/20 group-hover:border-[#F97316] transition-colors"></div>
+              <div class="absolute top-0 right-0 w-2 h-2 border-t border-r border-white/20 group-hover:border-[#F97316] transition-colors"></div>
+              <div class="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-white/20 group-hover:border-[#F97316] transition-colors"></div>
+              <div class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-white/20 group-hover:border-[#F97316] transition-colors"></div>
+              <button class="btn px-8 py-3 border border-white/10 text-sm text-white bg-transparent flex items-center gap-2">
+                <span>Explorar</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+          <p class="text-xs text-neutral-600 mt-4 font-mono">.btn-wrapper + corner accents + .btn</p>
+        </div>
+
+        <!-- Beam button -->
+        <div class="animate-on-scroll border border-white/5 bg-[#0A0A0A] rounded-xl p-8" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.2s both;">
+          <p class="text-xs font-mono uppercase tracking-widest text-neutral-500 mb-6">Botão Beam — Borda Cônica</p>
+          <div class="flex items-center justify-center py-8">
+            <div class="relative group p-[1px] rounded-full" style="background: conic-gradient(from 0deg, transparent 60%, #F97316 80%, #fbbf24 90%, #F97316 100%); animation: spin 3s linear infinite;">
+              <button class="relative bg-[#0A0A0A] rounded-full px-8 py-3 text-sm text-white flex items-center gap-2">
+                <i data-lucide="zap" class="w-4 h-4 text-[#F97316]"></i>
+                <span>Beam Action</span>
+              </button>
+            </div>
+          </div>
+          <p class="text-xs text-neutral-600 mt-4 font-mono">conic-gradient + animate-[spin_3s_linear_infinite]</p>
+        </div>
+
+        <!-- Shimmer button -->
+        <div class="animate-on-scroll border border-white/5 bg-[#0A0A0A] rounded-xl p-8" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.25s both;">
+          <p class="text-xs font-mono uppercase tracking-widest text-neutral-500 mb-6">Botão Shimmer</p>
+          <div class="flex items-center justify-center py-8">
+            <button class="relative overflow-hidden px-8 py-3 bg-white/5 border border-white/10 rounded-lg text-sm text-white group hover:border-[#F97316]/30 transition-colors">
+              <span class="relative z-10 flex items-center gap-2">
+                <i data-lucide="play" class="w-4 h-4"></i>
+                Shimmer Effect
+              </span>
+              <div class="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.2s_ease-in-out] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+            </button>
+          </div>
+          <p class="text-xs text-neutral-600 mt-4 font-mono">@keyframes shimmer + group-hover</p>
+        </div>
+
+        <!-- ── INPUTS ── -->
+        <!-- Pill input -->
+        <div class="animate-on-scroll border border-white/5 bg-[#0A0A0A] rounded-xl p-8" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.3s both;">
+          <p class="text-xs font-mono uppercase tracking-widest text-neutral-500 mb-6">Input Pill</p>
+          <div class="flex items-center justify-center py-8">
+            <div class="flex items-center w-full max-w-md bg-white/5 border border-white/10 rounded-full overflow-hidden focus-within:border-[#F97316]/40 transition-colors">
+              <input type="text" placeholder="Seu email..." class="flex-1 bg-transparent px-5 py-3 text-sm text-white placeholder:text-neutral-600 outline-none" />
+              <button class="bg-[#F97316] text-black px-5 py-3 text-sm font-medium rounded-full mr-1 hover:bg-orange-400 transition-colors">Enviar</button>
+            </div>
+          </div>
+          <p class="text-xs text-neutral-600 mt-4 font-mono">rounded-full + focus-within:border-orange</p>
+        </div>
+
+        <!-- Underline input -->
+        <div class="animate-on-scroll border border-white/5 bg-[#0A0A0A] rounded-xl p-8" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.35s both;">
+          <p class="text-xs font-mono uppercase tracking-widest text-neutral-500 mb-6">Input Underline</p>
+          <div class="flex items-center justify-center py-8">
+            <div class="w-full max-w-md">
+              <input type="text" placeholder="Nome completo" class="w-full bg-transparent border-b border-white/10 pb-3 text-sm text-white placeholder:text-neutral-600 outline-none focus:border-[#F97316] transition-colors" />
+            </div>
+          </div>
+          <p class="text-xs text-neutral-600 mt-4 font-mono">border-b + focus:border-orange</p>
+        </div>
+
+        <!-- ── CARDS ── -->
+        <!-- Orange testimonial card -->
+        <div class="animate-on-scroll border border-white/5 bg-[#0A0A0A] rounded-xl p-8" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.4s both;">
+          <p class="text-xs font-mono uppercase tracking-widest text-neutral-500 mb-6">Card Depoimento</p>
+          <div class="flex items-center justify-center py-4">
+            <div class="max-w-sm w-full bg-gradient-to-br from-orange-500/10 to-transparent border border-orange-500/20 rounded-2xl p-6">
+              <div class="flex items-center gap-1 mb-4">
+                <iconify-icon icon="solar:stars-bold-duotone" class="text-[#F97316]" width="20"></iconify-icon>
+                <iconify-icon icon="solar:stars-bold-duotone" class="text-[#F97316]" width="20"></iconify-icon>
+                <iconify-icon icon="solar:stars-bold-duotone" class="text-[#F97316]" width="20"></iconify-icon>
+                <iconify-icon icon="solar:stars-bold-duotone" class="text-[#F97316]" width="20"></iconify-icon>
+                <iconify-icon icon="solar:stars-bold-duotone" class="text-[#F97316]" width="20"></iconify-icon>
+              </div>
+              <p class="text-white/80 text-sm leading-relaxed italic mb-4">"O sistema de design transformou completamente nosso fluxo de trabalho. Componentes cinematográficos em minutos."</p>
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-orange-400 to-orange-600"></div>
+                <div><p class="text-xs text-white font-medium">Ana Costa</p><p class="text-[10px] text-neutral-500">Lead Designer</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Glass card -->
+        <div class="animate-on-scroll border border-white/5 bg-[#0A0A0A] rounded-xl p-8" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.45s both;">
+          <p class="text-xs font-mono uppercase tracking-widest text-neutral-500 mb-6">Card Glass</p>
+          <div class="flex items-center justify-center py-4">
+            <div class="max-w-sm w-full bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-lg bg-[#F97316]/20 flex items-center justify-center">
+                  <i data-lucide="layers" class="w-5 h-5 text-[#F97316]"></i>
+                </div>
+                <div><p class="text-sm text-white font-medium">Glassmorphism</p><p class="text-[10px] text-neutral-500">backdrop-blur + bg-white/5</p></div>
+              </div>
+              <p class="text-xs text-white/50 leading-relaxed">Superfície semi-transparente com desfoque de fundo para criar profundidade e hierarquia visual.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Flashlight card -->
+        <div class="animate-on-scroll border border-white/5 bg-[#0A0A0A] rounded-xl p-8" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.5s both;">
+          <p class="text-xs font-mono uppercase tracking-widest text-neutral-500 mb-6">Card Flashlight</p>
+          <div class="flex items-center justify-center py-4">
+            <div class="flashlight-card relative max-w-sm w-full border border-white/5 rounded-2xl p-6 cursor-pointer" onmousemove="this.style.setProperty('--mouse-x', e.offsetX+'px'); this.style.setProperty('--mouse-y', e.offsetY+'px');">
+              <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/3b89a5fb-be9e-41e8-8e44-663081_601b47875784.webp" alt="card 3" class="w-full h-32 object-cover rounded-lg mb-4 opacity-70" />
+              <p class="text-sm text-white font-medium mb-1">Efeito Lanterna</p>
+              <p class="text-xs text-neutral-500">Mova o mouse sobre o card para ver o radial-gradient seguindo o cursor.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card stack -->
+        <div class="animate-on-scroll border border-white/5 bg-[#0A0A0A] rounded-xl p-8" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.55s both;">
+          <p class="text-xs font-mono uppercase tracking-widest text-neutral-500 mb-6">Card Stack</p>
+          <div class="flex items-center justify-center py-8">
+            <div class="relative w-64 h-44">
+              <div class="card-stack-item absolute inset-0 bg-white/5 border border-white/10 rounded-xl" style="transform: translateY(16px) scale(0.92); opacity: 0.4; z-index: 1;"></div>
+              <div class="card-stack-item absolute inset-0 bg-white/5 border border-white/10 rounded-xl" style="transform: translateY(8px) scale(0.96); opacity: 0.6; z-index: 2;"></div>
+              <div class="card-stack-item absolute inset-0 bg-[#0A0A0A] border border-white/10 rounded-xl p-5 z-[3]">
+                <div class="flex items-center gap-2 mb-3">
+                  <div class="w-6 h-6 rounded bg-[#F97316]/20 flex items-center justify-center"><i data-lucide="check" class="w-3 h-3 text-[#F97316]"></i></div>
+                  <p class="text-xs text-white font-medium">Card Principal</p>
+                </div>
+                <p class="text-[11px] text-neutral-500 leading-relaxed">Três cards empilhados com translateY e scale decrementais para criar profundidade.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── NAVBAR SPECIMEN ── -->
+        <div class="animate-on-scroll border border-white/5 bg-[#0A0A0A] rounded-xl p-8 lg:col-span-2" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.6s both;">
+          <p class="text-xs font-mono uppercase tracking-widest text-neutral-500 mb-6">Navbar Specimen</p>
+          <div class="py-4">
+            <div class="bg-black/80 backdrop-blur-md border border-white/10 rounded-xl px-6 py-4 flex justify-between items-center">
+              <div class="flex items-center gap-3">
+                <div class="w-4 h-4 rounded-sm bg-[#F97316]"></div>
+                <span class="text-white text-sm font-semibold">Fusion</span>
+              </div>
+              <div class="flex items-center gap-6">
+                <a href="#" class="text-xs text-neutral-500 hover:text-white transition-colors">Início</a>
+                <a href="#" class="text-xs text-neutral-500 hover:text-white transition-colors">Recursos</a>
+                <a href="#" class="text-xs text-neutral-500 hover:text-white transition-colors">Preços</a>
+                <button class="button-custom !min-h-0 !py-2 !px-4">
+                  <span class="inner !text-xs">Começar</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SECTION SPECIMEN ── -->
+        <div class="animate-on-scroll border border-white/5 bg-[#0A0A0A] rounded-xl p-8 lg:col-span-2" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.65s both;">
+          <p class="text-xs font-mono uppercase tracking-widest text-neutral-500 mb-6">Section Specimen</p>
+          <div class="relative py-12 overflow-hidden rounded-xl border border-white/5">
+            <div class="absolute inset-0 grid-bg"></div>
+            <div class="beam-border-v" style="position: absolute;"></div>
+            <div class="beam-border-h" style="position: absolute;"></div>
+            <div class="relative z-10 text-center px-8">
+              <p class="text-xs font-mono uppercase tracking-[0.25em] text-neutral-500 mb-4">01 / Mini Seção</p>
+              <h3 class="text-4xl font-medium tracking-tighter text-white mb-3">Uma Seção Completa</h3>
+              <p class="text-sm text-white/40 max-w-md mx-auto">Com grid-bg, beam borders, headline hierárquica e espaçamento py-24 padrão.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── MODAL ── -->
+        <div class="animate-on-scroll border border-white/5 bg-[#0A0A0A] rounded-xl p-8" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.7s both;">
+          <p class="text-xs font-mono uppercase tracking-widest text-neutral-500 mb-6">Modal</p>
+          <div class="flex items-center justify-center py-4">
+            <div class="max-w-sm w-full bg-[#0A0A0A] border border-white/10 rounded-2xl p-6 backdrop-blur-md" style="animation: pulseGlow 4s ease-in-out infinite;">
+              <div class="flex items-center justify-between mb-4">
+                <h4 class="text-sm text-white font-medium">Confirmar Ação</h4>
+                <button class="w-6 h-6 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors">
+                  <span class="text-neutral-500 text-xs">✕</span>
+                </button>
+              </div>
+              <p class="text-xs text-neutral-500 mb-6 leading-relaxed">Tem certeza que deseja prosseguir? Esta ação não poderá ser desfeita.</p>
+              <div class="flex gap-3">
+                <button class="flex-1 px-4 py-2 border border-white/10 rounded-lg text-xs text-neutral-400 hover:bg-white/5 transition-colors">Cancelar</button>
+                <button class="flex-1 px-4 py-2 bg-[#F97316] rounded-lg text-xs text-black font-medium hover:bg-orange-400 transition-colors">Confirmar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── BADGES ── -->
+        <div class="animate-on-scroll border border-white/5 bg-[#0A0A0A] rounded-xl p-8" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.75s both;">
+          <p class="text-xs font-mono uppercase tracking-widest text-neutral-500 mb-6">Badges</p>
+          <div class="flex flex-wrap items-center gap-4 py-8 justify-center">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-[#F97316] text-black text-xs font-medium rounded-full">Novo</span>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 border border-[#F97316]/40 text-[#F97316] text-xs font-medium rounded-full">Premium</span>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 border border-white/10 text-neutral-400 text-xs rounded-full">Default</span>
+            <span class="inline-flex items-center gap-1.5 text-xs text-neutral-500">
+              <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span> Ativo
+            </span>
+            <span class="inline-flex items-center gap-1.5 text-xs text-neutral-500">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#F97316]"></span> Pendente
+            </span>
+            <span class="inline-flex items-center gap-1.5 text-xs text-neutral-500">
+              <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> Erro
+            </span>
+          </div>
+        </div>
+
+        <!-- ── TOOLTIPS ── -->
+        <div class="animate-on-scroll border border-white/5 bg-[#0A0A0A] rounded-xl p-8 lg:col-span-2" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.8s both;">
+          <p class="text-xs font-mono uppercase tracking-widest text-neutral-500 mb-6">Tooltips</p>
+          <div class="flex items-center justify-center gap-12 py-8">
+            <div class="relative group">
+              <button class="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors">
+                <i data-lucide="download" class="w-4 h-4 text-neutral-400"></i>
+              </button>
+              <div class="absolute -top-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                <div class="bg-white text-black text-[10px] font-medium px-3 py-1.5 rounded-lg whitespace-nowrap shadow-xl">Download</div>
+                <div class="w-2 h-2 bg-white rotate-45 absolute -bottom-1 left-1/2 -translate-x-1/2"></div>
+              </div>
+            </div>
+            <div class="relative group">
+              <button class="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors">
+                <i data-lucide="video" class="w-4 h-4 text-neutral-400"></i>
+              </button>
+              <div class="absolute -top-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                <div class="bg-white text-black text-[10px] font-medium px-3 py-1.5 rounded-lg whitespace-nowrap shadow-xl">Gravar vídeo</div>
+                <div class="w-2 h-2 bg-white rotate-45 absolute -bottom-1 left-1/2 -translate-x-1/2"></div>
+              </div>
+            </div>
+            <div class="relative group">
+              <button class="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors">
+                <i data-lucide="sparkles" class="w-4 h-4 text-neutral-400"></i>
+              </button>
+              <div class="absolute -top-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                <div class="bg-white text-black text-[10px] font-medium px-3 py-1.5 rounded-lg whitespace-nowrap shadow-xl">Gerar com IA</div>
+                <div class="w-2 h-2 bg-white rotate-45 absolute -bottom-1 left-1/2 -translate-x-1/2"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ╔═══════════════════════════════════════════════════════════════╗ -->
+  <!-- ║  SECTION 5 — ICONS                                          ║ -->
+  <!-- ╚═══════════════════════════════════════════════════════════════╝ -->
+  <section id="icons" class="relative border-t border-white/5 py-24">
+    <div class="beam-border-v"></div>
+    <div class="beam-border-h"></div>
+
+    <div class="max-w-[1400px] mx-auto px-6 md:px-12">
+      <!-- Header -->
+      <div class="mb-20">
+        <p class="animate-on-scroll text-xs font-mono uppercase tracking-[0.25em] text-neutral-500 mb-4" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.1s both;">05 / Ícones</p>
+        <h2 class="animate-on-scroll text-5xl md:text-6xl font-medium tracking-tighter text-white" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.2s both;">Sistemas de Ícones</h2>
+        <p class="animate-on-scroll text-white/40 text-lg mt-4 max-w-xl" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.3s both;">Dois sistemas de ícones — Iconify (Solar) para ícones duotone ricos e Lucide para ícones de linha minimalistas.</p>
+      </div>
+
+      <!-- Iconify / Solar -->
+      <div class="mb-16">
+        <h3 class="animate-on-scroll text-xl font-medium text-white mb-6" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.1s both;">Iconify — Solar Bold Duotone</h3>
+        <div class="animate-on-scroll grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.15s both;">
+          <div class="p-4 border border-white/5 bg-[#0A0A0A] rounded-lg flex flex-col items-center gap-3 hover:text-[#F97316] hover:border-[#F97316]/20 transition-colors cursor-pointer group">
+            <iconify-icon icon="solar:zip-file-bold-duotone" width="28" class="group-hover:scale-110 transition-transform"></iconify-icon>
+            <span class="text-[9px] font-mono text-neutral-600 group-hover:text-[#F97316]/60">zip-file</span>
+          </div>
+          <div class="p-4 border border-white/5 bg-[#0A0A0A] rounded-lg flex flex-col items-center gap-3 hover:text-[#F97316] hover:border-[#F97316]/20 transition-colors cursor-pointer group">
+            <iconify-icon icon="solar:file-download-bold-duotone" width="28" class="group-hover:scale-110 transition-transform"></iconify-icon>
+            <span class="text-[9px] font-mono text-neutral-600 group-hover:text-[#F97316]/60">file-download</span>
+          </div>
+          <div class="p-4 border border-white/5 bg-[#0A0A0A] rounded-lg flex flex-col items-center gap-3 hover:text-[#F97316] hover:border-[#F97316]/20 transition-colors cursor-pointer group">
+            <iconify-icon icon="solar:layers-minimalistic-bold-duotone" width="28" class="group-hover:scale-110 transition-transform"></iconify-icon>
+            <span class="text-[9px] font-mono text-neutral-600 group-hover:text-[#F97316]/60">layers</span>
+          </div>
+          <div class="p-4 border border-white/5 bg-[#0A0A0A] rounded-lg flex flex-col items-center gap-3 hover:text-[#F97316] hover:border-[#F97316]/20 transition-colors cursor-pointer group">
+            <iconify-icon icon="solar:graph-up-bold-duotone" width="28" class="group-hover:scale-110 transition-transform"></iconify-icon>
+            <span class="text-[9px] font-mono text-neutral-600 group-hover:text-[#F97316]/60">graph-up</span>
+          </div>
+          <div class="p-4 border border-white/5 bg-[#0A0A0A] rounded-lg flex flex-col items-center gap-3 hover:text-[#F97316] hover:border-[#F97316]/20 transition-colors cursor-pointer group">
+            <iconify-icon icon="solar:stars-bold-duotone" width="28" class="group-hover:scale-110 transition-transform"></iconify-icon>
+            <span class="text-[9px] font-mono text-neutral-600 group-hover:text-[#F97316]/60">stars</span>
+          </div>
+          <div class="p-4 border border-white/5 bg-[#0A0A0A] rounded-lg flex flex-col items-center gap-3 hover:text-[#F97316] hover:border-[#F97316]/20 transition-colors cursor-pointer group">
+            <iconify-icon icon="solar:play-bold-duotone" width="28" class="group-hover:scale-110 transition-transform"></iconify-icon>
+            <span class="text-[9px] font-mono text-neutral-600 group-hover:text-[#F97316]/60">play</span>
+          </div>
+          <div class="p-4 border border-white/5 bg-[#0A0A0A] rounded-lg flex flex-col items-center gap-3 hover:text-[#F97316] hover:border-[#F97316]/20 transition-colors cursor-pointer group">
+            <iconify-icon icon="solar:arrow-right-up-bold-duotone" width="28" class="group-hover:scale-110 transition-transform"></iconify-icon>
+            <span class="text-[9px] font-mono text-neutral-600 group-hover:text-[#F97316]/60">arrow-right-up</span>
+          </div>
+          <div class="p-4 border border-white/5 bg-[#0A0A0A] rounded-lg flex flex-col items-center gap-3 hover:text-[#F97316] hover:border-[#F97316]/20 transition-colors cursor-pointer group">
+            <iconify-icon icon="solar:code-square-bold-duotone" width="28" class="group-hover:scale-110 transition-transform"></iconify-icon>
+            <span class="text-[9px] font-mono text-neutral-600 group-hover:text-[#F97316]/60">code-square</span>
+          </div>
+          <div class="p-4 border border-white/5 bg-[#0A0A0A] rounded-lg flex flex-col items-center gap-3 hover:text-[#F97316] hover:border-[#F97316]/20 transition-colors cursor-pointer group">
+            <iconify-icon icon="solar:camera-bold-duotone" width="28" class="group-hover:scale-110 transition-transform"></iconify-icon>
+            <span class="text-[9px] font-mono text-neutral-600 group-hover:text-[#F97316]/60">camera</span>
+          </div>
+          <div class="p-4 border border-white/5 bg-[#0A0A0A] rounded-lg flex flex-col items-center gap-3 hover:text-[#F97316] hover:border-[#F97316]/20 transition-colors cursor-pointer group">
+            <iconify-icon icon="solar:planet-bold-duotone" width="28" class="group-hover:scale-110 transition-transform"></iconify-icon>
+            <span class="text-[9px] font-mono text-neutral-600 group-hover:text-[#F97316]/60">planet</span>
+          </div>
+          <div class="p-4 border border-white/5 bg-[#0A0A0A] rounded-lg flex flex-col items-center gap-3 hover:text-[#F97316] hover:border-[#F97316]/20 transition-colors cursor-pointer group">
+            <iconify-icon icon="solar:cpu-bold-duotone" width="28" class="group-hover:scale-110 transition-transform"></iconify-icon>
+            <span class="text-[9px] font-mono text-neutral-600 group-hover:text-[#F97316]/60">cpu</span>
+          </div>
+          <div class="p-4 border border-white/5 bg-[#0A0A0A] rounded-lg flex flex-col items-center gap-3 hover:text-[#F97316] hover:border-[#F97316]/20 transition-colors cursor-pointer group">
+            <iconify-icon icon="solar:database-bold-duotone" width="28" class="group-hover:scale-110 transition-transform"></iconify-icon>
+            <span class="text-[9px] font-mono text-neutral-600 group-hover:text-[#F97316]/60">database</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lucide -->
+      <div class="mb-16">
+        <h3 class="animate-on-scroll text-xl font-medium text-white mb-6" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.2s both;">Lucide — Line Icons</h3>
+        <div class="animate-on-scroll grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 gap-3" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.25s both;">
+          <div class="p-4 border border-white/5 bg-[#0A0A0A] rounded-lg flex flex-col items-center gap-3 hover:text-[#F97316] hover:border-[#F97316]/20 transition-colors cursor-pointer group">
+            <i data-lucide="sparkles" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
+            <span class="text-[9px] font-mono text-neutral-600 group-hover:text-[#F97316]/60">sparkles</span>
+          </div>
+          <div class="p-4 border border-white/5 bg-[#0A0A0A] rounded-lg flex flex-col items-center gap-3 hover:text-[#F97316] hover:border-[#F97316]/20 transition-colors cursor-pointer group">
+            <i data-lucide="play" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
+            <span class="text-[9px] font-mono text-neutral-600 group-hover:text-[#F97316]/60">play</span>
+          </div>
+          <div class="p-4 border border-white/5 bg-[#0A0A0A] rounded-lg flex flex-col items-center gap-3 hover:text-[#F97316] hover:border-[#F97316]/20 transition-colors cursor-pointer group">
+            <i data-lucide="zap" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
+            <span class="text-[9px] font-mono text-neutral-600 group-hover:text-[#F97316]/60">zap</span>
+          </div>
+          <div class="p-4 border border-white/5 bg-[#0A0A0A] rounded-lg flex flex-col items-center gap-3 hover:text-[#F97316] hover:border-[#F97316]/20 transition-colors cursor-pointer group">
+            <i data-lucide="check" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
+            <span class="text-[9px] font-mono text-neutral-600 group-hover:text-[#F97316]/60">check</span>
+          </div>
+          <div class="p-4 border border-white/5 bg-[#0A0A0A] rounded-lg flex flex-col items-center gap-3 hover:text-[#F97316] hover:border-[#F97316]/20 transition-colors cursor-pointer group">
+            <i data-lucide="arrow-right" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
+            <span class="text-[9px] font-mono text-neutral-600 group-hover:text-[#F97316]/60">arrow-right</span>
+          </div>
+          <div class="p-4 border border-white/5 bg-[#0A0A0A] rounded-lg flex flex-col items-center gap-3 hover:text-[#F97316] hover:border-[#F97316]/20 transition-colors cursor-pointer group">
+            <i data-lucide="video" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
+            <span class="text-[9px] font-mono text-neutral-600 group-hover:text-[#F97316]/60">video</span>
+          </div>
+          <div class="p-4 border border-white/5 bg-[#0A0A0A] rounded-lg flex flex-col items-center gap-3 hover:text-[#F97316] hover:border-[#F97316]/20 transition-colors cursor-pointer group">
+            <i data-lucide="download" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
+            <span class="text-[9px] font-mono text-neutral-600 group-hover:text-[#F97316]/60">download</span>
+          </div>
+          <div class="p-4 border border-white/5 bg-[#0A0A0A] rounded-lg flex flex-col items-center gap-3 hover:text-[#F97316] hover:border-[#F97316]/20 transition-colors cursor-pointer group">
+            <i data-lucide="layers" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
+            <span class="text-[9px] font-mono text-neutral-600 group-hover:text-[#F97316]/60">layers</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sizing showcase -->
+      <div class="animate-on-scroll" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.3s both;">
+        <h3 class="text-xl font-medium text-white mb-6">Escala de Tamanho</h3>
+        <div class="flex items-end gap-8 border border-white/5 bg-[#0A0A0A] rounded-xl p-8">
+          <div class="flex flex-col items-center gap-2">
+            <i data-lucide="sparkles" class="w-4 h-4 text-[#F97316]"></i>
+            <span class="text-[10px] font-mono text-neutral-600">16px</span>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <i data-lucide="sparkles" class="w-5 h-5 text-[#F97316]"></i>
+            <span class="text-[10px] font-mono text-neutral-600">20px</span>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <i data-lucide="sparkles" class="w-6 h-6 text-[#F97316]"></i>
+            <span class="text-[10px] font-mono text-neutral-600">24px</span>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <i data-lucide="sparkles" class="w-8 h-8 text-[#F97316]"></i>
+            <span class="text-[10px] font-mono text-neutral-600">32px</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ╔═══════════════════════════════════════════════════════════════╗ -->
+  <!-- ║  SECTION 6 — ANIMATIONS                                     ║ -->
+  <!-- ╚═══════════════════════════════════════════════════════════════╝ -->
+  <section id="animations" class="relative border-t border-white/5 py-24 mb-20">
+    <div class="beam-border-v right" style="left:auto; right:0;"></div>
+    <div class="beam-border-h"></div>
+
+    <div class="max-w-[1400px] mx-auto px-6 md:px-12">
+      <!-- Header -->
+      <div class="mb-20">
+        <p class="animate-on-scroll text-xs font-mono uppercase tracking-[0.25em] text-neutral-500 mb-4" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.1s both;">06 / Animações</p>
+        <h2 class="animate-on-scroll text-5xl md:text-6xl font-medium tracking-tighter text-white" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.2s both;">Biblioteca de Animações</h2>
+        <p class="animate-on-scroll text-white/40 text-lg mt-4 max-w-xl" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.3s both;">Demos ao vivo de cada animação do sistema, com controles de replay e parâmetros visíveis.</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6">
+
+        <!-- 1. fadeSlideIn -->
+        <div class="animate-on-scroll border border-white/5 bg-[#0A0A0A] rounded-xl p-8" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.1s both;">
+          <p class="text-xs font-mono uppercase tracking-widest text-neutral-500 mb-4">fadeSlideIn</p>
+          <div class="flex items-center justify-center py-8">
+            <div id="fadeDemo" class="w-20 h-20 rounded-xl bg-[#F97316]" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) both;"></div>
+          </div>
+          <button onclick="const el=document.getElementById('fadeDemo'); el.style.animation='none'; el.offsetHeight; el.style.animation='fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) both';" class="text-xs text-[#F97316] hover:underline font-mono">↻ Replay</button>
+          <p class="text-[10px] font-mono text-neutral-600 mt-2">opacity:0 → 1 + translateY(30px) → 0 + blur(8px) → 0</p>
+        </div>
+
+        <!-- 2. Beam borders -->
+        <div class="animate-on-scroll border border-white/5 bg-[#0A0A0A] rounded-xl p-8" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.15s both;">
+          <p class="text-xs font-mono uppercase tracking-widest text-neutral-500 mb-4">Beam Borders</p>
+          <div class="flex items-center justify-center py-8">
+            <div class="relative w-48 h-32 border border-white/5 rounded-lg">
+              <div class="beam-border-v" style="position:absolute;"></div>
+              <div class="beam-border-v right" style="position:absolute; left:auto; right:0;"></div>
+              <div class="beam-border-h" style="position:absolute;"></div>
+              <div class="beam-border-h top" style="position:absolute; bottom:auto; top:0;"></div>
+            </div>
+          </div>
+          <p class="text-[10px] font-mono text-neutral-600 mt-2">beam-drop 5s (vertical) + beam-slide 7s (horizontal)</p>
+        </div>
+
+        <!-- 3. Card stack -->
+        <div class="animate-on-scroll border border-white/5 bg-[#0A0A0A] rounded-xl p-8" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.2s both;">
+          <p class="text-xs font-mono uppercase tracking-widest text-neutral-500 mb-4">Card Stack</p>
+          <div class="flex items-center justify-center py-8">
+            <div class="relative w-48 h-32">
+              <div class="card-stack-item absolute inset-0 bg-white/5 border border-white/10 rounded-xl" style="transform: translateY(16px) scale(0.92); opacity: 0.4;"></div>
+              <div class="card-stack-item absolute inset-0 bg-white/5 border border-white/10 rounded-xl" style="transform: translateY(8px) scale(0.96); opacity: 0.6;"></div>
+              <div class="card-stack-item absolute inset-0 bg-[#0A0A0A] border border-white/10 rounded-xl flex items-center justify-center">
+                <iconify-icon icon="solar:layers-minimalistic-bold-duotone" width="32" class="text-[#F97316]"></iconify-icon>
+              </div>
+            </div>
+          </div>
+          <p class="text-[10px] font-mono text-neutral-600 mt-2">cubic-bezier(0.34, 1.56, 0.64, 1) + translateY + scale</p>
+        </div>
+
+        <!-- 4. Floating card -->
+        <div class="animate-on-scroll border border-white/5 bg-[#0A0A0A] rounded-xl p-8" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.25s both;">
+          <p class="text-xs font-mono uppercase tracking-widest text-neutral-500 mb-4">floatY</p>
+          <div class="flex items-center justify-center py-8">
+            <div class="w-32 h-20 rounded-xl border border-white/10 bg-white/5 flex items-center justify-center" style="animation: floatY 3s ease-in-out infinite;">
+              <iconify-icon icon="solar:planet-bold-duotone" width="28" class="text-[#F97316]"></iconify-icon>
+            </div>
+          </div>
+          <p class="text-[10px] font-mono text-neutral-600 mt-2">translateY(0) → -12px → 0 / 3s infinite</p>
+        </div>
+
+        <!-- 5. Marquee -->
+        <div class="animate-on-scroll border border-white/5 bg-[#0A0A0A] rounded-xl p-8 md:col-span-2 overflow-hidden" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.3s both;">
+          <p class="text-xs font-mono uppercase tracking-widest text-neutral-500 mb-4">Marquee</p>
+          <div class="py-6 overflow-hidden">
+            <div class="animate-marquee flex items-center gap-12 whitespace-nowrap" style="width: max-content;">
+              <iconify-icon icon="solar:stars-bold-duotone" width="32" class="text-white/20"></iconify-icon>
+              <span class="text-lg text-white/10 font-medium tracking-tight">Fusion Design System</span>
+              <iconify-icon icon="solar:cpu-bold-duotone" width="32" class="text-white/20"></iconify-icon>
+              <span class="text-lg text-white/10 font-medium tracking-tight">Components</span>
+              <iconify-icon icon="solar:code-square-bold-duotone" width="32" class="text-white/20"></iconify-icon>
+              <span class="text-lg text-white/10 font-medium tracking-tight">Typography</span>
+              <iconify-icon icon="solar:planet-bold-duotone" width="32" class="text-white/20"></iconify-icon>
+              <span class="text-lg text-white/10 font-medium tracking-tight">Animations</span>
+              <iconify-icon icon="solar:graph-up-bold-duotone" width="32" class="text-white/20"></iconify-icon>
+              <span class="text-lg text-white/10 font-medium tracking-tight">Colors</span>
+              <iconify-icon icon="solar:database-bold-duotone" width="32" class="text-white/20"></iconify-icon>
+              <span class="text-lg text-white/10 font-medium tracking-tight">Icons</span>
+              <!-- duplicate for seamless loop -->
+              <iconify-icon icon="solar:stars-bold-duotone" width="32" class="text-white/20"></iconify-icon>
+              <span class="text-lg text-white/10 font-medium tracking-tight">Fusion Design System</span>
+              <iconify-icon icon="solar:cpu-bold-duotone" width="32" class="text-white/20"></iconify-icon>
+              <span class="text-lg text-white/10 font-medium tracking-tight">Components</span>
+              <iconify-icon icon="solar:code-square-bold-duotone" width="32" class="text-white/20"></iconify-icon>
+              <span class="text-lg text-white/10 font-medium tracking-tight">Typography</span>
+              <iconify-icon icon="solar:planet-bold-duotone" width="32" class="text-white/20"></iconify-icon>
+              <span class="text-lg text-white/10 font-medium tracking-tight">Animations</span>
+              <iconify-icon icon="solar:graph-up-bold-duotone" width="32" class="text-white/20"></iconify-icon>
+              <span class="text-lg text-white/10 font-medium tracking-tight">Colors</span>
+              <iconify-icon icon="solar:database-bold-duotone" width="32" class="text-white/20"></iconify-icon>
+              <span class="text-lg text-white/10 font-medium tracking-tight">Icons</span>
+            </div>
+          </div>
+          <p class="text-[10px] font-mono text-neutral-600 mt-2">translateX(0) → translateX(-50%) / 40s linear infinite</p>
+        </div>
+
+        <!-- 6. Shimmer button -->
+        <div class="animate-on-scroll border border-white/5 bg-[#0A0A0A] rounded-xl p-8" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.35s both;">
+          <p class="text-xs font-mono uppercase tracking-widest text-neutral-500 mb-4">Shimmer</p>
+          <div class="flex items-center justify-center py-8">
+            <button class="relative overflow-hidden px-10 py-4 bg-white/5 border border-white/10 rounded-xl text-sm text-white group hover:border-[#F97316]/30 transition-colors">
+              <span class="relative z-10">Passe o mouse</span>
+              <div class="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.2s_ease-in-out] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+            </button>
+          </div>
+          <p class="text-[10px] font-mono text-neutral-600 mt-2">translateX(-100%) → 200% + skewX(-15deg)</p>
+        </div>
+
+        <!-- 7. Flashlight -->
+        <div class="animate-on-scroll border border-white/5 bg-[#0A0A0A] rounded-xl p-8" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.4s both;">
+          <p class="text-xs font-mono uppercase tracking-widest text-neutral-500 mb-4">Flashlight</p>
+          <div class="flex items-center justify-center py-8">
+            <div class="flashlight-card relative w-48 h-32 border border-white/10 rounded-xl flex items-center justify-center cursor-pointer" id="flashlightDemo">
+              <p class="text-xs text-neutral-500 pointer-events-none">Mova o mouse aqui</p>
+            </div>
+          </div>
+          <p class="text-[10px] font-mono text-neutral-600 mt-2">radial-gradient(800px circle at var(--mouse-x) var(--mouse-y))</p>
+        </div>
+
+        <!-- 8. Falling beams -->
+        <div class="animate-on-scroll border border-white/5 bg-[#0A0A0A] rounded-xl p-8 md:col-span-2" style="animation: fadeSlideIn 1s cubic-bezier(0.2,0.8,0.2,1) 0.45s both;">
+          <p class="text-xs font-mono uppercase tracking-widest text-neutral-500 mb-4">Falling Beams</p>
+          <div class="relative h-48 overflow-hidden rounded-lg border border-white/5">
+            <div class="absolute inset-0 grid grid-cols-5 pointer-events-none">
+              <div class="relative overflow-hidden"><div class="absolute left-1/2 w-[1px] h-24 bg-gradient-to-b from-transparent via-[#F97316] to-transparent animate-beam-1"></div></div>
+              <div class="relative overflow-hidden"><div class="absolute left-1/3 w-[1px] h-20 bg-gradient-to-b from-transparent via-white/40 to-transparent animate-beam-2"></div></div>
+              <div class="relative overflow-hidden"><div class="absolute left-2/3 w-[1px] h-28 bg-gradient-to-b from-transparent via-[#F97316]/60 to-transparent animate-beam-3"></div></div>
+              <div class="relative overflow-hidden"><div class="absolute left-1/4 w-[1px] h-16 bg-gradient-to-b from-transparent via-white/20 to-transparent animate-beam-1" style="animation-delay:1.5s;"></div></div>
+              <div class="relative overflow-hidden"><div class="absolute left-3/4 w-[1px] h-32 bg-gradient-to-b from-transparent via-[#F97316]/40 to-transparent animate-beam-2" style="animation-delay:0.5s;"></div></div>
+            </div>
+            <div class="absolute inset-0 flex items-center justify-center">
+              <p class="text-xs text-neutral-600 font-mono">beam-fall 6s / 7s / 8s linear infinite</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ╔═══════════════════════════════════════════════════════════════╗ -->
+  <!-- ║  FOOTER                                                      ║ -->
+  <!-- ╚═══════════════════════════════════════════════════════════════╝ -->
+  <footer class="relative border-t border-white/5 overflow-hidden">
+    <div class="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+      <span class="text-[20vw] font-bold tracking-tighter text-white/[0.02] leading-none">FUSION</span>
+    </div>
+    <div class="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#050505] to-transparent pointer-events-none"></div>
+    <div class="relative z-10 max-w-[1400px] mx-auto px-6 md:px-12 py-20 text-center">
+      <div class="flex items-center justify-center gap-3 mb-6">
+        <div class="w-5 h-5 rounded-sm bg-[#F97316]"></div>
+        <span class="text-white text-sm font-semibold tracking-tight">Fusion Design System</span>
+      </div>
+      <p class="text-xs text-neutral-600 mb-2">Sistema de design para experiências digitais cinematográficas.</p>
+      <p class="text-[10px] text-neutral-700 font-mono">&copy; 2026 Fusion. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+
+  <!-- ═══════════════ SCRIPTS ═══════════════ -->
+
+  <!-- Intersection Observer -->
+  <script>
+    (function(){
+      const once=true;
+      if(!window.__inViewIO){
+        window.__inViewIO=new IntersectionObserver((entries)=>{
+          entries.forEach((entry)=>{
+            if(entry.isIntersecting){
+              entry.target.classList.add("animate");
+              if(once) window.__inViewIO.unobserve(entry.target);
+            }
+          });
+        },{threshold:0.15,rootMargin:"0px 0px -10% 0px"});
+      }
+      window.initInViewAnimations=function(selector=".animate-on-scroll"){
+        document.querySelectorAll(selector).forEach((el)=>{
+          window.__inViewIO.observe(el);
+        });
+      };
+      document.addEventListener("DOMContentLoaded",()=>initInViewAnimations());
+    })();
+  </script>
+
+  <!-- Lucide icons init -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      if(window.lucide){ lucide.createIcons({attrs:{'stroke-width':1.5}}); }
+    });
+  </script>
+
+  <!-- Flashlight card mouse tracking -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      document.querySelectorAll('.flashlight-card').forEach(function(card) {
+        card.addEventListener('mousemove', function(e) {
+          var rect = card.getBoundingClientRect();
+          card.style.setProperty('--mouse-x', (e.clientX - rect.left) + 'px');
+          card.style.setProperty('--mouse-y', (e.clientY - rect.top) + 'px');
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ARTools — Transformando Marcas em Máquinas de Vendas</title>
+  <meta name="description"
+    content="Agência de marketing digital focada em crescimento previsível, performance e posicionamento de alto valor." />
+
+  <!-- ── Fonts ── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- ── GSAP + ScrollTrigger ── -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- ── Lenis Smooth Scroll ── -->
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+
+  <!-- ── SplitType ── -->
+  <script src="https://unpkg.com/split-type@0.3.4/umd/index.min.js"></script>
+
+  <style>
+    /* ══════════════════════════════════════════
+       DESIGN SYSTEM TOKENS (Fusion 2.0)
+    ══════════════════════════════════════════ */
+    :root {
+      --color-bg: #050505;
+      --color-surface: #0A0A0A;
+      --color-primary: #F97316;
+      --color-primary-dk: #ea580c;
+      --color-amber: #fbbf24;
+      --color-white: #ffffff;
+      --color-neutral: rgba(255, 255, 255, 0.6);
+      --color-muted: rgba(255, 255, 255, 0.4);
+      --color-border: rgba(255, 255, 255, 0.08);
+      --font-sans: 'Inter', system-ui, sans-serif;
+      --ease-smooth: cubic-bezier(0.2, 0.8, 0.2, 1);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* ── Reset ── */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-bg);
+      color: var(--color-neutral);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    ::selection {
+      background: var(--color-primary);
+      color: #000;
+    }
+
+    /* ── Noise overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      background-size: 180px 180px;
+      opacity: 0.028;
+      mix-blend-mode: overlay;
+    }
+
+    /* ══════════════════════════════════════════
+       ANIMATIONS (exact Fusion 2.0 keyframes)
+    ══════════════════════════════════════════ */
+    @keyframes fadeSlideIn {
+      0% {
+        opacity: 0;
+        transform: translateY(30px);
+        filter: blur(8px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+      }
+    }
+
+    @keyframes beam-drop {
+      0% {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 1;
+      }
+
+      90% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(100%);
+        opacity: 0;
+      }
+    }
+
+    @keyframes beam-fall {
+      0% {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+
+      5% {
+        opacity: 0.5;
+      }
+
+      50% {
+        opacity: 1;
+      }
+
+      95% {
+        opacity: 0.5;
+      }
+
+      100% {
+        transform: translateY(120vh);
+        opacity: 0;
+      }
+    }
+
+    @keyframes floatY {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-14px);
+      }
+    }
+
+    @keyframes pulseGlow {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 rgba(249, 115, 22, 0);
+      }
+
+      50% {
+        box-shadow: 0 0 60px rgba(249, 115, 22, 0.25);
+      }
+    }
+
+    @keyframes shimmer {
+      from {
+        transform: translateX(-100%) skewX(-15deg);
+      }
+
+      to {
+        transform: translateX(200%) skewX(-15deg);
+      }
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes floating-points {
+      0% {
+        transform: translateY(0);
+      }
+
+      85% {
+        opacity: 0;
+      }
+
+      100% {
+        transform: translateY(-55px);
+        opacity: 0;
+      }
+    }
+
+    @keyframes orb-pulse {
+
+      0%,
+      100% {
+        opacity: 0.12;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.2;
+        transform: scale(1.08);
+      }
+    }
+
+    @keyframes char-reveal {
+      from {
+        transform: translateY(110%);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    /* ══════════════════════════════════════════
+       AMBIENT BACKGROUND (Fusion orbs)
+    ══════════════════════════════════════════ */
+    .ambient-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -20;
+      pointer-events: none;
+      mask-image: linear-gradient(to bottom, transparent, black 10%, black 80%, transparent);
+      -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 80%, transparent);
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(0px);
+    }
+
+    .orb-1 {
+      top: -20%;
+      left: -10%;
+      width: 65vw;
+      height: 65vw;
+      background: radial-gradient(circle, rgba(249, 115, 22, 0.14) 0%, transparent 70%);
+      animation: floatY 13s ease-in-out infinite;
+    }
+
+    .orb-2 {
+      bottom: -10%;
+      right: -15%;
+      width: 55vw;
+      height: 55vw;
+      background: radial-gradient(circle, rgba(234, 88, 12, 0.09) 0%, transparent 65%);
+      animation: floatY 17s ease-in-out infinite reverse;
+    }
+
+    .orb-3 {
+      top: 30%;
+      left: 45%;
+      width: 45vw;
+      height: 45vw;
+      background: radial-gradient(circle, rgba(251, 191, 36, 0.06) 0%, transparent 60%);
+      animation: floatY 22s ease-in-out infinite 3s;
+    }
+
+    /* ══════════════════════════════════════════
+       GRID BACKGROUND
+    ══════════════════════════════════════════ */
+    .grid-bg {
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse at center, black 40%, transparent 72%);
+      -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 72%);
+    }
+
+    /* ══════════════════════════════════════════
+       BEAM BORDERS
+    ══════════════════════════════════════════ */
+    .beam-v {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 1px;
+      background: rgba(255, 255, 255, 0.05);
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    .beam-v::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent, var(--color-primary), transparent);
+      transform: translateY(-100%);
+      animation: beam-drop 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      opacity: 0.7;
+    }
+
+    .beam-v.right {
+      left: auto;
+      right: 0;
+    }
+
+    /* ══════════════════════════════════════════
+       NAVBAR
+    ══════════════════════════════════════════ */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 68px;
+      background: rgba(5, 5, 5, 0.75);
+      backdrop-filter: blur(20px) saturate(1.6);
+      -webkit-backdrop-filter: blur(20px) saturate(1.6);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      transition: background 0.4s ease;
+    }
+
+    .navbar-logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .logo-img {
+      height: 48px;
+      /* Ideal size for desktop */
+      width: auto;
+      object-fit: contain;
+      transition: opacity 0.3s ease;
+    }
+
+    .navbar-logo:hover .logo-img {
+      opacity: 0.8;
+    }
+
+    .navbar-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+
+    .navbar-links a {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.45);
+      text-decoration: none;
+      transition: color 0.25s ease;
+    }
+
+    .navbar-links a:hover {
+      color: var(--color-white);
+    }
+
+    .navbar-cta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* ══════════════════════════════════════════
+       HERO SECTION
+    ══════════════════════════════════════════ */
+    /* ══════════════════════════════════════════
+       HERO — Full-screen video hero
+    ══════════════════════════════════════════ */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* ── Fullscreen video ── */
+    .hero-video-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .hero-video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+    }
+
+    /* Dark vignette over video for text legibility */
+    .hero-vignette {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(to right, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 50%, transparent 100%);
+      pointer-events: none;
+    }
+
+    /* Content — centered overlay */
+    .hero-inner {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      padding: 0 5%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-top: 40px;
+      /* Offset to feel balanced */
+    }
+
+    /* ── LEFT COLUMN ── */
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+      max-width: 800px;
+      /* limits width of text */
+    }
+
+    /* Heading */
+    .hero-heading {
+      font-size: clamp(32px, 4.2vw, 54px);
+      font-weight: 400;
+      /* updated to thinner */
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--color-white);
+      margin-bottom: 20px;
+      overflow: hidden;
+      text-align: left;
+      text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
+    }
+
+    .hero-heading .word {
+      display: inline-block;
+      overflow: hidden;
+      margin-right: 0.22em;
+      vertical-align: bottom;
+    }
+
+    .hero-heading .char {
+      display: inline-block;
+      transform: translateY(110%);
+      opacity: 0;
+    }
+
+    /* Subtitle */
+    .hero-sub {
+      font-size: clamp(15px, 1.8vw, 20px);
+      font-weight: 300;
+      line-height: 1.5;
+      color: var(--color-white);
+      max-width: 600px;
+      margin-bottom: 32px;
+      opacity: 0;
+      text-align: left;
+      text-shadow: 0 1px 12px rgba(0, 0, 0, 0.8);
+    }
+
+    /* ── PARTNERS LOGOS ── */
+    .hero-partners {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      margin-bottom: 48px;
+      opacity: 0;
+    }
+
+    .partner-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .partner-icon {
+      height: 28px;
+      fill: #fff;
+    }
+
+    .partner-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .partner-text-primary {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: -0.01em;
+      color: #fff;
+    }
+
+    .partner-text-secondary {
+      font-size: 9px;
+      font-weight: 500;
+      line-height: 1;
+      margin-top: 3px;
+      letter-spacing: 0.05em;
+      color: rgba(255, 255, 255, 0.8);
+      text-transform: uppercase;
+    }
+
+    /* ── DESIGN SYSTEM CTA BUTTONS ── */
+    .hero-ctas {
+      display: flex;
+      align-items: center;
+      opacity: 0;
+    }
+
+    .btn-ds-wrapper {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 24px;
+      border: 1px solid #262626;
+      background: transparent;
+      text-decoration: none;
+      cursor: pointer;
+      transition: border-color 0.3s ease;
+    }
+
+    .btn-ds-wrapper:hover {
+      border-color: #F97316;
+    }
+
+    .btn-ds-bg {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjQ5LCAxMTUsIDIyLCAwLjIpIi8+PC9zdmc+");
+      transition: opacity 0.3s ease;
+      z-index: 0;
+    }
+
+    .btn-ds-wrapper:hover .btn-ds-bg {
+      opacity: 1;
+    }
+
+    .btn-ds-corner {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 2;
+    }
+
+    .btn-ds-tl {
+      top: 0;
+      left: 0;
+      border-top: 1px solid #F97316;
+      border-left: 1px solid #F97316;
+      transform: translate(-4px, -4px);
+    }
+
+    .btn-ds-wrapper:hover .btn-ds-tl {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+
+    .btn-ds-br {
+      bottom: 0;
+      right: 0;
+      border-bottom: 1px solid #F97316;
+      border-right: 1px solid #F97316;
+      transform: translate(4px, 4px);
+    }
+
+    .btn-ds-wrapper:hover .btn-ds-br {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+
+    .btn-ds-content {
+      position: relative;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--color-white);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+      background: transparent;
+      border: none;
+      padding: 8px 16px;
+      margin: -8px -16px;
+    }
+
+    .btn-ds-wrapper:hover .btn-ds-content {
+      color: #000;
+      background: #F97316;
+    }
+
+    /* ── Scroll hint ── */
+    .scroll-hint {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+    }
+
+    .scroll-hint-label {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.25);
+    }
+
+    .scroll-mouse {
+      width: 22px;
+      height: 36px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 6px;
+    }
+
+    .scroll-wheel {
+      width: 3px;
+      height: 8px;
+      border-radius: 9px;
+      background: rgba(249, 115, 22, 0.7);
+      animation: floatY 1.8s ease-in-out infinite;
+    }
+
+    /* ── Hero film grain (CSS Performant) ── */
+    .hero-grain {
+      position: absolute;
+      inset: -100%;
+      /* Make bigger to allow shifting */
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0.15;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      animation: noise 0.5s steps(3) infinite;
+    }
+
+    @keyframes noise {
+
+      0%,
+      100% {
+        transform: translate(0, 0);
+      }
+
+      10% {
+        transform: translate(-5%, -10%);
+      }
+
+      20% {
+        transform: translate(-15%, 5%);
+      }
+
+      30% {
+        transform: translate(7%, -25%);
+      }
+
+      40% {
+        transform: translate(-5%, 25%);
+      }
+
+      50% {
+        transform: translate(-15%, 10%);
+      }
+
+      60% {
+        transform: translate(15%, 0%);
+      }
+
+      70% {
+        transform: translate(0%, 15%);
+      }
+
+      80% {
+        transform: translate(3%, 35%);
+      }
+
+      90% {
+        transform: translate(-10%, 10%);
+      }
+    }
+
+    /* Bottom edge fade */
+    .hero-fade-bottom {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 160px;
+      background: linear-gradient(to top, var(--color-bg), transparent);
+      z-index: 15;
+      pointer-events: none;
+    }
+
+    /* ══════════════════════════════════════════
+       RESPONSIVENESS
+    ══════════════════════════════════════════ */
+
+    /* Progressive Adjustments */
+    @media (max-width: 1024px) {
+      .navbar {
+        padding: 0 28px;
+      }
+
+      .navbar-links {
+        display: none;
+      }
+
+      .hero-inner {
+        padding: 0 28px;
+      }
+
+      .hero-heading {
+        font-size: 38px;
+      }
+
+      .hero-sub {
+        font-size: 16px;
+      }
+
+      .hero-partners {
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+
+      .logo-img {
+        height: 36px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero-heading {
+        font-size: 28px;
+        line-height: 1.1;
+      }
+
+      .navbar {
+        padding: 0 20px;
+        height: 60px;
+      }
+
+      .hero-inner {
+        padding: 0 20px;
+      }
+
+      .logo-img {
+        height: 28px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ─────────────── AMBIENT BACKGROUND ─────────────── -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- ─────────────── NAVBAR ─────────────── -->
+  <nav class="navbar" id="navbar" aria-label="Navegação principal">
+    <a href="#hero" class="navbar-logo" aria-label="ARTools — início">
+      <img src="assets/rawfiles/ChatGPT%20Image%2018%20de%20fev.%20de%202026,%2000_23_47.png" alt="Logotipo"
+        class="logo-img">
+    </a>
+
+    <div class="navbar-links" role="list">
+      <a href="#hero" role="listitem">Início</a>
+      <a href="#servicos" role="listitem">Serviços</a>
+      <a href="#casos" role="listitem">Cases</a>
+      <a href="#contato" role="listitem">Contato</a>
+    </div>
+
+    <div class="navbar-cta">
+      <!-- Fast action button in nav -->
+      <a href="#contato" class="btn-ds-wrapper" id="navCta" style="padding: 10px 16px;">
+        <div class="btn-ds-bg" aria-hidden="true"></div>
+        <div class="btn-ds-corner btn-ds-tl" aria-hidden="true"></div>
+        <div class="btn-ds-corner btn-ds-br" aria-hidden="true"></div>
+        <div class="btn-ds-content" style="font-size: 11px;">
+          Falar com Especialista
+          <svg aria-hidden="true" class="iconify" data-icon="solar:arrow-right-up-bold-duotone" height="1em" role="img"
+            viewBox="0 0 24 24" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 14px;">
+            <path clip-rule="evenodd"
+              d="M17.47 15.53a.75.75 0 0 0 1.28-.53V6a.75.75 0 0 0-.75-.75H9a.75.75 0 0 0-.53 1.28z" fill="currentColor"
+              fill-rule="evenodd"></path>
+            <path d="M5.47 17.47a.75.75 0 1 0 1.06 1.06l6.97-6.97l-1.06-1.06z" fill="currentColor" opacity=".5"></path>
+          </svg>
+        </div>
+      </a>
+    </div>
+  </nav>
+
+
+  <!-- ─────────────── HERO SECTION ─────────────── -->
+  <section class="hero" id="hero" aria-label="Seção principal">
+
+    <!-- Grid background -->
+    <div class="hero-grid grid-bg" aria-hidden="true"></div>
+
+    <!-- Falling light beams -->
+    <div class="hero-beams" aria-hidden="true">
+      <div class="beam-col">
+        <div class="beam-line" style="left:40%; height:120px; animation-duration:6s;"></div>
+      </div>
+      <div class="beam-col">
+        <div class="beam-line"
+          style="left:65%; height:90px;  animation-duration:8s; animation-delay:1.5s; background:linear-gradient(to bottom, transparent, rgba(255,255,255,0.18), transparent);">
+        </div>
+      </div>
+      <div class="beam-col">
+        <div class="beam-line" style="left:30%; height:150px; animation-duration:7s; animation-delay:3s;"></div>
+      </div>
+      <div class="beam-col">
+        <div class="beam-line"
+          style="left:55%; height:80px;  animation-duration:9s; animation-delay:0.8s; background:linear-gradient(to bottom, transparent, rgba(255,255,255,0.15), transparent);">
+        </div>
+      </div>
+      <div class="beam-col">
+        <div class="beam-line" style="left:45%; height:110px; animation-duration:6.5s; animation-delay:4s;"></div>
+      </div>
+      <div class="beam-col">
+        <div class="beam-line" style="left:70%; height:100px; animation-duration:8.5s; animation-delay:2s;"></div>
+      </div>
+    </div>
+
+    <!-- ── Fullscreen video background ── -->
+    <div class="hero-video-bg" aria-hidden="true">
+      <video id="heroVideo" class="hero-video" src="assets/rawfiles/2.mp4" autoplay muted loop playsinline
+        preload="auto" aria-label="Vídeo de apresentação da agência"></video>
+    </div>
+
+    <!-- ── Film grain overlay (now CSS) ── -->
+    <div class="hero-grain" aria-hidden="true"></div>
+
+    <!-- ── Dark vignette for text readability ── -->
+    <div class="hero-vignette" aria-hidden="true"></div>
+
+    <!-- Main content — aligned left -->
+    <div class="hero-inner">
+      <div class="hero-left">
+
+        <!-- Heading -->
+        <h1 class="hero-heading" id="heroHeading">
+          <span class="line-wrap" style="display:block; overflow:hidden;">
+            Estratégia que renasce.
+          </span>
+          <span class="line-wrap" style="display:block; overflow:hidden;">
+            Desempenho que evolui.
+          </span>
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="hero-sub" id="heroSub">
+          A ATHÊNIX DIGITAL é uma agência de marketing digital especializada em transformar presença online em
+          crescimento estruturado. Unimos inteligência estratégica, dados e execução precisas para marcas que precisam
+          evoluir no ambiente digital.
+        </p>
+
+        <!-- Partners -->
+        <div class="hero-partners" id="heroPartners">
+          <!-- Meta Partner -->
+          <div class="partner-logo">
+            <svg class="partner-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M12.0001 8c-3.1539 0-5.8398 2.0307-6.7323 4.8697L3.0804 17.5108C2.5188 18.2598 1.4883 18.4116.7368 17.8596c-.7515-.552-.9165-1.5996-.3684-2.3484l2.5857-3.4476A8.0006 8.0006 0 0 1 12.0001 6.6667v1.3333zm0 8c3.1539 0 5.8398-2.0307 6.7323-4.8697l2.1873-4.6411c.5616-.749 1.5921-.9008 2.3436-.3488.7515.552.9165 1.5996.3684 2.3484l-2.5857 3.4476A8.0006 8.0006 0 0 1 12.0001 19.3333v-1.3333z"
+                fill-rule="evenodd" clip-rule="evenodd" />
+              <!-- Simplified infinity icon for Meta -->
+              <path
+                d="M7 10C5.34315 10 4 11.3431 4 13C4 14.6569 5.34315 16 7 16C8.03126 16 8.94073 15.4795 9.47565 14.6543L14.5243 9.34568C15.0593 8.52047 15.9687 8 17 8C18.6569 8 20 9.34315 20 11C20 12.6569 18.6569 14 17 14C15.9687 14 15.0593 13.4795 14.5243 12.6543"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            <div class="partner-text">
+              <span class="partner-text-primary">Meta</span>
+              <span class="partner-text-secondary">Business</span>
+            </div>
+          </div>
+
+          <!-- Google Partner -->
+          <div class="partner-logo">
+            <svg class="partner-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <!-- Simplified G -->
+              <path
+                d="M11.9999 12.04v-2.34h5.45c0.05 0.38 0.08 0.77 0.08 1.18 0 3.75-2.52 6.42-5.53 6.42-3.4 0-6.15-2.76-6.15-6.15s2.75-6.15 6.15-6.15c1.67 0 3.09 0.62 4.19 1.66l-1.68 1.68c-0.49-0.47-1.33-1.02-2.51-1.02-2.2 0-3.99 1.83-3.99 4.07 0 2.24 1.79 4.07 3.99 4.07 1.8 0 3.19-1.01 3.65-2.42h-3.65z"
+                fill="currentColor" />
+            </svg>
+            <div class="partner-text">
+              <span class="partner-text-primary">Google</span>
+              <span class="partner-text-secondary">SEO</span>
+            </div>
+          </div>
+
+          <!-- RD Station -->
+          <div class="partner-logo">
+            <svg class="partner-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 8L10 13L5 18M19 8L14 13L19 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+            <div class="partner-text">
+              <span class="partner-text-primary">Web design</span>
+              <span class="partner-text-secondary">UI UX</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTAs -->
+        <div class="hero-ctas" id="heroCtas">
+          <a href="#contato" class="btn-ds-wrapper" id="ctaPrimary">
+            <div class="btn-ds-bg" aria-hidden="true"></div>
+            <div class="btn-ds-corner btn-ds-tl" aria-hidden="true"></div>
+            <div class="btn-ds-corner btn-ds-br" aria-hidden="true"></div>
+            <div class="btn-ds-content">
+              Solicitar Orçamento
+              <svg aria-hidden="true" class="iconify" data-icon="solar:arrow-right-up-bold-duotone" height="1.2em"
+                role="img" viewBox="0 0 24 24" width="1.2em" xmlns="http://www.w3.org/2000/svg"
+                style="font-size: 18px;">
+                <path clip-rule="evenodd"
+                  d="M17.47 15.53a.75.75 0 0 0 1.28-.53V6a.75.75 0 0 0-.75-.75H9a.75.75 0 0 0-.53 1.28z"
+                  fill="currentColor" fill-rule="evenodd"></path>
+                <path d="M5.47 17.47a.75.75 0 1 0 1.06 1.06l6.97-6.97l-1.06-1.06z" fill="currentColor" opacity=".5">
+                </path>
+              </svg>
+            </div>
+          </a>
+        </div>
+
+      </div><!-- /hero-left -->
+    </div><!-- /hero-inner -->
+
+    <!-- Scroll hint -->
+    <div class="scroll-hint" id="scrollHint" aria-hidden="true">
+      <div class="scroll-mouse">
+        <div class="scroll-wheel"></div>
+      </div>
+      <span class="scroll-hint-label">Scroll</span>
+    </div>
+
+    <!-- Bottom fade -->
+    <div class="hero-fade-bottom" aria-hidden="true"></div>
+
+  </section>
+
+
+  <!-- ════════════════════════════════════════════════
+     PLACEHOLDER SECTIONS (so scroll-trigger has room)
+  ═════════════════════════════════════════════════ -->
+  <section id="servicos" style="min-height:100vh; display:flex; align-items:center; justify-content:center;">
+    <p style="color:rgba(255,255,255,0.15); font-size:13px; letter-spacing:0.15em; text-transform:uppercase;">
+      Seção de Serviços — em breve
+    </p>
+  </section>
+
+
+  <!-- ════════════════════════════════════════════════
+     SCRIPTS
+  ═════════════════════════════════════════════════ -->
+  <script>
+    /* ────────────────────────────────────────────
+       1. LENIS — Smooth scroll (integrated with GSAP)
+    ──────────────────────────────────────────── */
+    const lenis = new Lenis({
+      duration: 1.25,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+    });
+
+    // Keep GSAP ScrollTrigger in sync with Lenis
+    lenis.on('scroll', ScrollTrigger.update);
+
+    const lenisRaf = (time) => {
+      lenis.raf(time);
+      requestAnimationFrame(lenisRaf);
+    };
+    requestAnimationFrame(lenisRaf);
+
+    /* ────────────────────────────────────────────
+       2. GSAP plugins registration
+    ──────────────────────────────────────────── */
+    gsap.registerPlugin(ScrollTrigger);
+
+    /* ────────────────────────────────────────────
+       3. SCROLL-DRIVEN VIDEO PARALLAX (Apple-style)
+       The video currentTime is driven purely by scroll
+       position — no autoplay.
+    ──────────────────────────────────────────── */
+    const heroVideo = document.getElementById('heroVideo');
+
+    // Wait until video metadata is loaded so we know the duration
+    // Video plays freely via autoplay + loop attributes.
+
+    /* ────────────────────────────────────────────
+       4. HERO ENTRANCE ANIMATIONS (GSAP timeline)
+       Fires once on load.
+    ──────────────────────────────────────────── */
+    window.addEventListener('DOMContentLoaded', () => {
+
+      // Remove badge animation, modify heading
+      const headingLines = document.querySelectorAll('#heroHeading .line-wrap');
+
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+      // Navbar slide in
+      tl.fromTo('.navbar',
+        { y: -40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1 }
+      );
+
+      // Heading lines
+      headingLines.forEach((line, i) => {
+        const type = new SplitType(line, { types: 'chars' });
+        tl.fromTo(type.chars,
+          { y: '110%', opacity: 0 },
+          {
+            y: 0, opacity: 1,
+            duration: 0.7,
+            stagger: 0.025,
+            ease: 'power2.out'
+          },
+          i === 0 ? '-=0.3' : '-=0.55'
+        );
+      });
+
+      // Subtitle
+      tl.fromTo('#heroSub',
+        { y: 28, opacity: 0, filter: 'blur(6px)' },
+        { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.9 },
+        '-=0.45'
+      );
+
+      // CTAs
+      tl.fromTo('#heroCtas',
+        { y: 24, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8 },
+        '-=0.55'
+      );
+
+      // Partners
+      tl.fromTo('#heroPartners',
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8 },
+        '-=0.4'
+      );
+
+      // Scroll hint — delayed
+      tl.fromTo('#scrollHint',
+        { opacity: 0 },
+        { opacity: 1, duration: 1 },
+        '-=0.2'
+      );
+
+      // ── Hide scroll hint when user scrolls ──
+      ScrollTrigger.create({
+        trigger: '#hero',
+        start: 'top+=100 top',
+        onEnter: () => gsap.to('#scrollHint', { opacity: 0, duration: 0.4 }),
+        onLeaveBack: () => gsap.to('#scrollHint', { opacity: 1, duration: 0.4 }),
+      });
+
+    }); // /DOMContentLoaded
+
+    /* ────────────────────────────────────────────
+       5. NAVBAR — Scroll-aware transparency
+    ──────────────────────────────────────────── */
+    ScrollTrigger.create({
+      trigger: '#hero',
+      start: 'top+=80 top',
+      onToggle: (self) => {
+        const navbar = document.getElementById('navbar');
+        if (self.isActive) {
+          navbar.style.background = 'rgba(5,5,5,0.95)';
+          navbar.style.borderBottomColor = 'rgba(255,255,255,0.1)';
+        } else {
+          navbar.style.background = 'rgba(5,5,5,0.75)';
+          navbar.style.borderBottomColor = 'rgba(255,255,255,0.07)';
+        }
+      }
+    });
+
+    /* ────────────────────────────────────────────
+       6. MAGNETIC BUTTON effect on primary CTA
+    ──────────────────────────────────────────── */
+    const magnetBtn = document.getElementById('ctaPrimary');
+    magnetBtn.addEventListener('mousemove', (e) => {
+      const rect = magnetBtn.getBoundingClientRect();
+      const dx = (e.clientX - rect.left - rect.width / 2) * 0.18;
+      const dy = (e.clientY - rect.top - rect.height / 2) * 0.18;
+      gsap.to(magnetBtn, { x: dx, y: dy, duration: 0.35, ease: 'power2.out' });
+    });
+    magnetBtn.addEventListener('mouseleave', () => {
+      gsap.to(magnetBtn, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1, 0.5)' });
+    });
+
+  </script>
+
+</body>
+
+</html>
