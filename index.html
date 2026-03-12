@@ -446,7 +446,7 @@
       /* updated to thinner */
       line-height: 1.05;
       letter-spacing: -0.02em;
-      color: var(--color-white);
+      color: #ffffff !important;
       margin-bottom: 20px;
       overflow: hidden;
       text-align: left;
@@ -715,23 +715,934 @@
       }
     }
 
-    /* Bottom edge fade */
-    .hero-fade-bottom {
+    /* ── Services Section (Third Fold) ── */
+    .services-section {
+      position: relative;
+      padding: 60px 5% 120px 5%;
+      background: var(--color-bg);
+      overflow: hidden;
+    }
+
+    .services-container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .services-top {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      margin-bottom: 100px;
+    }
+
+    .services-text {
+      text-align: left;
+    }
+
+    .services-heading {
+      font-size: clamp(32px, 4vw, 56px);
+      font-weight: 600;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--color-white);
+      margin-bottom: 24px;
+      opacity: 0;
+    }
+
+    .services-sub {
+      font-size: clamp(16px, 1.2vw, 20px);
+      font-weight: 300;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.5);
+      max-width: 500px;
+      opacity: 0;
+    }
+
+    .services-media {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      border-radius: 24px;
+      overflow: hidden;
+      background: #111;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      opacity: 0;
+    }
+
+    .media-placeholder {
       position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 160px;
-      background: linear-gradient(to top, var(--color-bg), transparent);
-      z-index: 15;
+      inset: 0;
+      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Edge fade effect to connect with background */
+    .media-placeholder::after {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      z-index: 2;
+      background: radial-gradient(circle at center, transparent 30%, var(--color-bg) 95%);
       pointer-events: none;
     }
 
-    /* ══════════════════════════════════════════
-       RESPONSIVENESS
-    ══════════════════════════════════════════ */
+    .media-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
 
-    /* Progressive Adjustments */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .service-card {
+      position: relative;
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 32px;
+      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      opacity: 0;
+      cursor: pointer;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .service-card .card-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-white);
+      transition: all 0.4s ease;
+    }
+
+    .service-card:hover .card-icon {
+      background: rgba(249, 115, 22, 0.1);
+      border-color: rgba(249, 115, 22, 0.3);
+      color: #F97316;
+    }
+
+    .service-card .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--color-white);
+      line-height: 1.3;
+    }
+
+    .service-card .card-description {
+      font-size: 14px;
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.5);
+      line-height: 1.6;
+    }
+
+    .services-footer {
+      margin-top: 80px;
+      text-align: center;
+      opacity: 0;
+    }
+
+    .services-footer-heading {
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.3);
+      max-width: 800px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(249, 115, 22, 0.1) 0%, transparent 100%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .service-card:hover {
+      border-color: rgba(249, 115, 22, 0.3);
+      transform: translateY(-8px);
+      background: rgba(255, 255, 255, 0.04);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .service-card:hover::before {
+      opacity: 1;
+    }
+
+    /* Responsive Services */
+    @media (max-width: 1024px) {
+      .services-top {
+        grid-template-columns: 1fr;
+        gap: 48px;
+        text-align: center;
+      }
+
+      .services-text {
+        text-align: center;
+      }
+
+      .services-sub {
+        margin: 0 auto;
+      }
+
+      .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .service-card {
+        height: 220px;
+      }
+    }
+
+    /* ── Impact Section (Fourth Fold) ── */
+    .impact-section {
+      position: relative;
+      padding: 100px 5% 140px 5%;
+      background: var(--color-bg);
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .impact-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .impact-heading {
+      font-size: clamp(28px, 3.5vw, 42px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--color-white);
+      margin-bottom: 60px;
+      opacity: 0;
+    }
+
+    .impact-heading span {
+      position: relative;
+      display: inline-block;
+    }
+
+    .impact-heading span::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 10%;
+      width: 80%;
+      height: 4px;
+      background: var(--color-primary);
+      border-radius: 2px;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .impact-heading.active span::after {
+      transform: scaleX(1);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+      margin-bottom: 60px;
+    }
+
+    .stat-item {
+      opacity: 0;
+    }
+
+    .stat-number {
+      font-size: clamp(36px, 4.5vw, 56px);
+      font-weight: 800;
+      color: var(--color-primary);
+      line-height: 1;
+      margin-bottom: 12px;
+      display: block;
+      letter-spacing: -0.02em;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.4);
+      line-height: 1.4;
+      max-width: 180px;
+      margin: 0 auto;
+    }
+
+    .impact-quote {
+      font-size: clamp(16px, 2vw, 22px);
+      font-weight: 500;
+      color: var(--color-white);
+      letter-spacing: -0.02em;
+      opacity: 0;
+    }
+
+    .impact-quote .highlight {
+      color: var(--color-primary);
+    }
+
+    /* Responsive Impact */
+    @media (max-width: 1024px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 60px 40px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .impact-heading {
+        margin-bottom: 60px;
+      }
+    }
+
+    /* ── Promise Section (Second Fold) ── */
+    .promise-section {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 5% 60px 5%;
+      background: var(--color-bg);
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .promise-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 20px;
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 100px;
+      margin-bottom: 40px;
+      opacity: 0;
+    }
+
+    .promise-badge-icon {
+      width: 14px;
+      height: 14px;
+      color: var(--color-primary);
+    }
+
+    .promise-badge-text {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .promise-heading {
+      font-size: clamp(32px, 4.5vw, 64px);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      color: var(--color-white);
+      max-width: 850px;
+      margin-bottom: 24px;
+      opacity: 0;
+    }
+
+    .promise-heading .accent {
+      display: inline-block;
+      background: #F97316;
+      /* Vivid orange from design system */
+      color: #000;
+      padding: 0 16px;
+      margin: 0 4px;
+      line-height: 1.2;
+      position: relative;
+      animation: pulse-glow 3s infinite ease-in-out;
+      border-radius: 4px;
+    }
+
+    @keyframes pulse-glow {
+
+      0%,
+      100% {
+        box-shadow: 0 0 20px rgba(249, 115, 22, 0.2);
+      }
+
+      50% {
+        box-shadow: 0 0 40px rgba(249, 115, 22, 0.4);
+      }
+    }
+
+    .promise-sub {
+      font-size: clamp(15px, 1.3vw, 18px);
+      font-weight: 400;
+      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.5);
+      max-width: 650px;
+      margin-bottom: 48px;
+      opacity: 0;
+    }
+
+    .promise-indicator-row {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      opacity: 0;
+    }
+
+    .promise-number {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    .promise-label {
+      font-size: clamp(24px, 3vw, 40px);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      color: var(--color-white);
+    }
+
+    /* ── About Section (Fifth Fold) ── */
+    .about-section {
+      position: relative;
+      background: var(--color-bg);
+      display: flex;
+      align-items: center;
+      padding: 80px 0;
+      overflow: hidden;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      width: 100%;
+    }
+
+    .about-text-content {
+      padding: 60px 8% 60px 10%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .about-heading {
+      font-size: clamp(28px, 3.5vw, 42px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--color-white);
+      margin-bottom: 32px;
+      opacity: 0;
+    }
+
+    .about-description {
+      font-size: clamp(14px, 1.1vw, 17px);
+      font-weight: 300;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.6);
+      max-width: 540px;
+    }
+
+    .about-description p {
+      margin-bottom: 24px;
+      opacity: 0;
+    }
+
+    .about-media {
+      position: relative;
+      height: 100%;
+      min-height: 400px;
+      padding-right: 5%;
+    }
+
+    .about-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Edge fade effect to blend image with text side */
+    .about-media::after {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      z-index: 2;
+      background: linear-gradient(to right, var(--color-bg) 0%, transparent 15%, transparent 85%, var(--color-bg) 100%);
+      pointer-events: none;
+    }
+
+    @media (max-width: 1024px) {
+      .about-section {
+        min-height: auto;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .about-text-content {
+        padding: 80px 5%;
+        order: 2;
+      }
+
+      .about-media {
+        height: 400px;
+        order: 1;
+      }
+
+      .about-media::after {
+        background: linear-gradient(to bottom, var(--color-bg) 0%, transparent 15%, transparent 85%, var(--color-bg) 100%);
+      }
+
+    }
+
+    /* ── Culture section (Sixth Fold) - Unified Layout ── */
+    .culture-section {
+      padding: 100px 5%;
+      background: var(--color-bg);
+      position: relative;
+    }
+
+    .culture-main-card {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.01);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 24px;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+    }
+
+    .culture-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+      position: relative;
+    }
+
+    /* Dividers */
+    .culture-grid::before {
+      /* Vertical Divider */
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.08), transparent);
+      z-index: 2;
+    }
+
+    .culture-grid::after {
+      /* Horizontal Divider */
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.08), transparent);
+      z-index: 2;
+    }
+
+    /* Central Circle */
+    .culture-center-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60px;
+      height: 60px;
+      background: var(--color-bg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      color: rgba(255, 255, 255, 0.5);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .culture-item {
+      padding: 60px 50px;
+      display: flex;
+      gap: 24px;
+      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+      position: relative;
+    }
+
+    .culture-item::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, rgba(249, 115, 22, 0.08), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+
+    .culture-item:hover {
+      background: rgba(249, 115, 22, 0.02);
+    }
+
+    .culture-item:hover::after {
+      opacity: 1;
+    }
+
+    .culture-item:hover .item-icon-box {
+      border-color: rgba(249, 115, 22, 0.4);
+      background: rgba(249, 115, 22, 0.1);
+      box-shadow: 0 0 20px rgba(249, 115, 22, 0.1);
+    }
+
+    .item-icon-box {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-primary);
+    }
+
+    .item-content {
+      flex-grow: 1;
+    }
+
+    .item-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--color-white);
+      margin-bottom: 8px;
+    }
+
+    .item-text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.5);
+      font-weight: 300;
+      max-width: 400px;
+    }
+
+    .culture-values-list {
+      list-style: none;
+      padding: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 20px;
+    }
+
+    .culture-values-list li {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.4);
+      padding-left: 14px;
+      position: relative;
+    }
+
+    .culture-values-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 7px;
+      width: 4px;
+      height: 6px;
+      background: var(--color-primary);
+      border-radius: 50%;
+    }
+
+    /* ── Projects Showcase (Seventh Fold) ── */
+    .project-showcase {
+      padding: 0 5% 100px;
+      background: var(--color-bg);
+      position: relative;
+      text-align: center;
+    }
+
+    .project-container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .project-header {
+      margin-bottom: 80px;
+    }
+
+    .project-mockup-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+      perspective: 2000px;
+    }
+
+    .project-img-display {
+      width: 100%;
+      height: auto;
+      border-radius: 20px;
+      box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
+      transition: transform 0.1s ease-out;
+      mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+    }
+
+    .project-info-overlay {
+      margin-top: -100px;
+      position: relative;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .project-title {
+      font-size: 56px;
+      font-weight: 800;
+      margin-bottom: 24px;
+      letter-spacing: -2px;
+      color: var(--color-white);
+    }
+
+    .project-description {
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.6);
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .project-title {
+        font-size: 36px;
+      }
+
+      .project-showcase {
+        padding: 80px 20px;
+      }
+    }
+
+    /* ── Detailed Services (Eighth Fold) ── */
+    .detailed-services .section-header>* {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .detailed-services {
+      padding: 100px 5%;
+      background: var(--color-bg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .detailed-services::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .services-detailed-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .services-timeline {
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto;
+      padding-left: 40px;
+    }
+
+    .services-timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom,
+          transparent,
+          rgba(255, 255, 255, 0.1) 10%,
+          rgba(255, 255, 255, 0.1) 90%,
+          transparent);
+      z-index: 1;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 60px;
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .timeline-marker {
+      position: absolute;
+      left: -44px;
+      /* Aligned with the 1px line (40px padding + half stroke width) */
+      top: 40px;
+      width: 9px;
+      height: 9px;
+      background: #fff;
+      border-radius: 50%;
+      z-index: 2;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+    }
+
+    .service-detailed-card {
+      background: rgba(15, 15, 15, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 32px 40px;
+      position: relative;
+      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      display: flex;
+      align-items: flex-start;
+      gap: 32px;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .service-detailed-card:hover {
+      border-color: rgba(249, 115, 22, 0.3);
+      background: rgba(20, 20, 20, 0.8);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .service-card-content {
+      flex: 1;
+    }
+
+    .service-card-icon {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      background: rgba(249, 115, 22, 0.1);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-primary);
+    }
+
+    .service-card-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--color-white);
+      letter-spacing: -0.5px;
+      margin-bottom: 4px;
+    }
+
+    .service-card-text {
+      font-size: 15px;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.7);
+      /* Improved contrast */
+      font-weight: 300;
+    }
+
+    .service-topics {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .service-topics li {
+      position: relative;
+      padding-left: 24px;
+      line-height: 1.5;
+    }
+
+    .service-topics li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 6px;
+      height: 6px;
+      background: var(--color-primary);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--color-primary);
+    }
+
+    .service-card-highlight {
+      margin-top: auto;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 13px;
+      color: var(--color-primary);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: 1024px) {
+      .services-grid-detailed {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .services-grid-detailed {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ── Responsive Utils ── */
     @media (max-width: 1024px) {
       .navbar {
         padding: 0 28px;
@@ -780,6 +1691,139 @@
 
       .logo-img {
         height: 28px;
+      }
+    }
+
+    /* ── Contact Section (Ninth Fold) ── */
+    .contact-section {
+      padding: 160px 5% 80px;
+      background: var(--color-bg);
+      position: relative;
+      overflow: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .contact-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 5;
+    }
+
+    .contact-content {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .contact-heading {
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.1;
+      margin-bottom: 40px;
+      letter-spacing: -0.03em;
+    }
+
+    .contact-heading .text-accent {
+      color: var(--color-primary);
+      position: relative;
+      display: inline-block;
+    }
+
+    .contact-info {
+      max-width: 750px;
+      margin-bottom: 50px;
+    }
+
+    .contact-lead {
+      font-size: 20px;
+      color: #ffffff;
+      margin-bottom: 24px;
+      font-weight: 400;
+    }
+
+    .contact-desc {
+      font-size: 16px;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 40px;
+      font-weight: 300;
+    }
+
+    .contact-evolution {
+      margin-bottom: 48px;
+    }
+
+    .evolution-tag {
+      background: rgba(249, 115, 22, 0.1);
+      border: 1px solid rgba(249, 115, 22, 0.2);
+      color: var(--color-primary);
+      padding: 8px 20px;
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .contact-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 auto 40px;
+      display: inline-flex;
+      flex-direction: column;
+      gap: 16px;
+      text-align: left;
+    }
+
+    .contact-list li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 16px;
+      color: #ffffff;
+    }
+
+    .contact-icon {
+      font-size: 20px;
+    }
+
+    .contact-actions {
+      margin-top: 20px;
+    }
+
+    .btn-huge {
+      padding: 20px 48px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .footer-simple {
+      margin-top: auto;
+      padding-top: 100px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      width: 100%;
+      text-align: center;
+    }
+
+    .footer-content p {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.3);
+      letter-spacing: 0.5px;
+    }
+
+    @media (max-width: 768px) {
+      .contact-heading {
+        font-size: 32px;
+      }
+
+      .contact-lead {
+        font-size: 18px;
       }
     }
   </style>
@@ -978,15 +2022,520 @@
   </section>
 
 
-  <!-- ════════════════════════════════════════════════
-     PLACEHOLDER SECTIONS (so scroll-trigger has room)
-  ═════════════════════════════════════════════════ -->
-  <section id="servicos" style="min-height:100vh; display:flex; align-items:center; justify-content:center;">
-    <p style="color:rgba(255,255,255,0.15); font-size:13px; letter-spacing:0.15em; text-transform:uppercase;">
-      Seção de Serviços — em breve
+  <!-- ─────────────── PROMISE SECTION ─────────────── -->
+  <section class="promise-section" id="compromisso" aria-label="Nosso Compromisso">
+    <!-- Grid background -->
+    <div class="hero-grid grid-bg" aria-hidden="true" style="opacity: 0.4;"></div>
+
+    <div class="promise-badge" id="promiseBadge">
+      <svg class="promise-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+      </svg>
+      <span class="promise-badge-text">NOSSO COMPROMISSO</span>
+    </div>
+
+    <h2 class="promise-heading" id="promiseHeading">
+      Presença digital não é estar online.<br>
+      <span class="accent">É gerar resultado.</span>
+    </h2>
+
+    <p class="promise-sub" id="promiseSub">
+      Criamos estratégias digitais que posicionam marcas, escalam resultados e constroem crescimento sustentável.
     </p>
+
   </section>
 
+
+  <!-- ─────────────── SERVICES SECTION ─────────────── -->
+  <section class="services-section" id="servicos" aria-label="Nossos Serviços">
+    <div class="hero-grid grid-bg" aria-hidden="true" style="opacity: 0.2;"></div>
+
+    <div class="services-container">
+      <div class="services-top">
+        <div class="services-text">
+          <div class="promise-badge" id="servicesBadge">
+            <svg class="promise-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+              <line x1="8" y1="21" x2="16" y2="21"></line>
+              <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+            <span class="promise-badge-text">O QUE FAZEMOS</span>
+          </div>
+          <h2 class="services-heading" id="servicesHeading">O que fazemos</h2>
+          <p class="services-sub" id="servicesSub">
+            Aqui, marketing é planejamento. Publicidade é performance. E cada ação nasce de análise real, não de
+            achismo.
+          </p>
+        </div>
+        <div class="services-media" id="servicesMedia">
+          <div class="media-placeholder">
+            <img src="assets/rawfiles/chraecker-owl-50267_1920.jpg" alt="Estratégia Athênix" class="media-img">
+          </div>
+        </div>
+      </div>
+
+      <div class="services-grid" id="servicesGrid">
+        <!-- Card 1 -->
+        <div class="service-card">
+          <div class="card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+            </svg>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">Sites de Alta Conversão</h3>
+            <p class="card-description">Criação de site orientada à conversão e SEO para resultados imediatos.</p>
+          </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="service-card">
+          <div class="card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+              <line x1="12" y1="18" x2="12.01" y2="18"></line>
+            </svg>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">Aplicativos Mobile</h3>
+            <p class="card-description">Desenvolvimento de aplicativos funcionais, escaláveis e centrados no usuário.
+            </p>
+          </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="service-card">
+          <div class="card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">Gestão de Redes Sociais</h3>
+            <p class="card-description">Planejamento e gestão de Redes sociais com posicionamento estratégico.</p>
+          </div>
+        </div>
+        <!-- Card 4 -->
+        <div class="service-card">
+          <div class="card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">SEO Técnico</h3>
+            <p class="card-description">SEO técnico e conteúdo orientado por intenção de busca para autoridade.</p>
+          </div>
+        </div>
+        <!-- Card 5 -->
+        <div class="service-card">
+          <div class="card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+              <polyline points="17 6 23 6 23 12"></polyline>
+            </svg>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">Tráfego Pago</h3>
+            <p class="card-description">Tráfego pago, mídia e otimização contínua de ROI em canais digitais.</p>
+          </div>
+        </div>
+        <!-- Card 6 -->
+        <div class="service-card">
+          <div class="card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 3v18h18"></path>
+              <path d="M18 9l-5 5-2-2-4 4"></path>
+            </svg>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">Análise de Dados</h3>
+            <p class="card-description">Análise de dados e performance para decisões estratégicas reais.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="services-footer" id="servicesFooter">
+        <h2 class="services-footer-heading">
+          Não criamos ações isoladas.
+          Criamos sistemas de crescimento.
+        </h2>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────── IMPACT SECTION ─────────────── -->
+  <section class="impact-section" id="impacto">
+    <div class="impact-container">
+      <div class="promise-badge" id="impactBadge" style="margin: 0 auto 32px auto;">
+        <span class="promise-badge-text">IMPACTO REAL</span>
+      </div>
+
+      <h2 class="impact-heading" id="impactHeading">
+        Resultados que sustentam <span>estratégia</span>
+      </h2>
+
+      <div class="stats-grid">
+        <div class="stat-item">
+          <span class="stat-number" data-target="120">+0</span>
+          <p class="stat-label">projetos digitais estruturados</p>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" data-target="300">+0%</span>
+          <p class="stat-label">de crescimento médio em tráfego qualificado</p>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" data-target="45">+0%</span>
+          <p class="stat-label">de aumento médio em taxa de conversão</p>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" data-target="100">0%</span>
+          <p class="stat-label">Decisões orientadas por dados</p>
+        </div>
+      </div>
+
+      <p class="impact-quote" id="impactQuote">
+        "Estratégia é o começo. <span class="highlight">Performance</span> é a consequência."
+      </p>
+    </div>
+  </section>
+
+  <!-- ─────────────── ABOUT SECTION ─────────────── -->
+  <section class="about-section" id="quem-somos">
+    <div class="about-grid">
+      <div class="about-text-content">
+        <div class="promise-badge" id="aboutBadge" style="opacity: 0; margin-bottom: 32px;">
+          <span class="promise-badge-text">QUEM SOMOS</span>
+        </div>
+        <h2 class="about-heading" id="aboutHeading">
+          Inteligência para planejar.<br>
+          Força para transformar.
+        </h2>
+        <div class="about-description" id="aboutDescription">
+          <p>A ATHÊNIX DIGITAL nasce da união de dois símbolos atemporais:</p>
+          <p>Athena, a estratégia, a lógica e a visão tática. Fênix, a transformação, a adaptação e o crescimento
+            contínuo.</p>
+          <p>Somos uma agência de marketing digital orientada por estratégia, dados e performance. Atuamos na interseção
+            entre marketing, publicidade e tecnologia para gerar resultados reais.</p>
+          <p style="color: var(--color-white); font-weight: 500;">Não entregamos apenas execução. Entregamos direção
+            estratégica.</p>
+        </div>
+      </div>
+      <div class="about-media" id="aboutMedia" style="opacity: 0;">
+        <img src="assets/rawfiles/917d6f93-fb36-439a-8c48-884b67b35381_1600w.jpg" alt="Equipe Athênix"
+          class="about-img">
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ─────────────── CULTURE SECTION ─────────────── -->
+  <section class="culture-section" id="cultura">
+    <div class="culture-main-card">
+      <div class="culture-grid">
+        <!-- Vertical and Horizontal Dividers are handled in CSS ::before/::after -->
+
+        <!-- Central Icon -->
+        <div class="culture-center-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="13 17 18 12 13 7"></polyline>
+            <polyline points="6 17 11 12 6 7"></polyline>
+          </svg>
+        </div>
+
+        <!-- Propósito -->
+        <div class="culture-item">
+          <div class="item-icon-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <circle cx="12" cy="12" r="6" />
+            </svg>
+          </div>
+          <div class="item-content">
+            <h3 class="item-title">Propósito</h3>
+            <p class="item-text">Transformar presença digital em crescimento estruturado.</p>
+          </div>
+        </div>
+
+        <!-- Missão -->
+        <div class="culture-item">
+          <div class="item-icon-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+            </svg>
+          </div>
+          <div class="item-content">
+            <h3 class="item-title">Missão</h3>
+            <p class="item-text">Desenvolver estratégias digitais inteligentes que posicionem marcas com autoridade,
+              gerem resultados mensuráveis e sustentem evolução contínua.</p>
+          </div>
+        </div>
+
+        <!-- Visão -->
+        <div class="culture-item">
+          <div class="item-icon-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+          </div>
+          <div class="item-content">
+            <h3 class="item-title">Visão</h3>
+            <p class="item-text">Ser referência como agência de marketing digital estratégica e orientada por
+              performance, reconhecida por transformar negócios por meio de inteligência e execução de alto nível.</p>
+          </div>
+        </div>
+
+        <!-- Valores -->
+        <div class="culture-item">
+          <div class="item-icon-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+          </div>
+          <div class="item-content">
+            <h3 class="item-title">Valores</h3>
+            <ul class="culture-values-list">
+              <li>Estratégia acima de tudo;</li>
+              <li>Evolução constante;</li>
+              <li>Clareza e transparência;</li>
+              <li>Inteligência aplicada;</li>
+              <li>Compromisso com crescimento;</li>
+              <li>Excelência na execução.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────── PROJECTS SECTION (Seventh Fold) ─────────────── -->
+  <section class="project-showcase" id="projetos" style="padding: 0 0 60px;">
+    <div class="project-container" style="max-width: 1000px; margin: 0 auto;">
+      <div class="project-mockup-wrapper" id="projectMockup"
+        style="transform: scale(0.8); transform-origin: top center; margin-top: -20px;">
+        <img src="assets/rawfiles/Whisk_e4d29c93035f5b9a45643b4d10b26252dr.png" alt="Philo Care Project Mockup"
+          class="project-img-display"
+          style="width: 100%; height: auto; border-radius: 24px; box-shadow: 0 40px 80px rgba(0,0,0,0.6);">
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────── DETAILED SERVICES SECTION (Eighth Fold) ─────────────── -->
+  <section class="detailed-services" id="servicos-detalhes"
+    style="z-index: 20; position: relative; padding: 120px 5% 140px;">
+    <div class="services-detailed-container">
+      <div class="section-header" style="text-align: center; margin-bottom: 100px;">
+        <div class="promise-badge" style="margin: 0 auto 24px;">
+          <span class="promise-badge-text">SERVIÇOS REALIZADOS</span>
+        </div>
+        <h1 class="section-title" style="color: #ffffff !important; opacity: 1 !important;">Soluções digitais orientadas
+          por estratégia e performance</h1>
+        <p class="section-subtitle"
+          style="max-width: 800px; margin: 32px auto 0; font-size: 17px; color: rgba(255,255,255,0.6); line-height: 1.8; font-weight: 300;">
+          Cada serviço da ATHÊNIX DIGITAL faz parte de um ecossistema integrado. Nada é isolado. Tudo é pensado para
+          escalar.
+        </p>
+      </div>
+
+      <div class="services-timeline">
+        <!-- Estrutura Digital -->
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="service-detailed-card">
+            <div class="service-card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                <line x1="8" y1="21" x2="16" y2="21" />
+                <line x1="12" y1="17" x2="12" y2="21" />
+              </svg>
+            </div>
+            <div class="service-card-content">
+              <h3 class="service-card-title">Estrutura Digital</h3>
+              <div class="service-card-text">
+                <ul class="service-topics">
+                  <li>Criação de site e desenvolvimento de aplicativos com arquitetura focada em performance,
+                    usabilidade e crescimento.</li>
+                  <li>Plataformas rápidas, escaláveis e preparadas para SEO desde a base.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="service-card-highlight">Arquitetura de Performance</div>
+          </div>
+        </div>
+
+        <!-- Conteúdo e SEO Estratégico -->
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="service-detailed-card">
+            <div class="service-card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+              </svg>
+            </div>
+            <div class="service-card-content">
+              <h3 class="service-card-title">Conteúdo e SEO Estratégico</h3>
+              <div class="service-card-text">
+                <ul class="service-topics">
+                  <li>Conteúdo orientado por dados, palavras-chave e intenção de busca.</li>
+                  <li>Aqui, marketing de conteúdo é posicionamento, autoridade e crescimento orgânico sustentável.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="service-card-highlight">Crescimento Orgânico</div>
+          </div>
+        </div>
+
+        <!-- Redes Sociais e Autoridade -->
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="service-detailed-card">
+            <div class="service-card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                  d="M18 8A3 3 0 0 0 15 5A3 3 0 0 0 12 8A3 3 0 0 0 15 11A3 3 0 0 0 18 8ZM18 8L21 8M12 8L9 8M15 11L15 14M15 5L15 2" />
+                <path d="M4 19a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h4l2 2h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4Z" />
+              </svg>
+            </div>
+            <div class="service-card-content">
+              <h3 class="service-card-title">Redes Sociais e Autoridade Digital</h3>
+              <div class="service-card-text">
+                <ul class="service-topics">
+                  <li>Planejamento e gestão de redes sociais com narrativa clara, posicionamento e consistência.</li>
+                  <li>Publicar não basta. É preciso construir percepção e valor.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="service-card-highlight">Construção de Valor</div>
+          </div>
+        </div>
+
+        <!-- Performance, Tráfego e Publicidade -->
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="service-detailed-card">
+            <div class="service-card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+              </svg>
+            </div>
+            <div class="service-card-content">
+              <h3 class="service-card-title">Performance, Tráfego e Publicidade</h3>
+              <div class="service-card-text">
+                <ul class="service-topics">
+                  <li>Gestão de publicidade digital com foco em ROI, testes contínuos e otimização baseada em dados.
+                  </li>
+                  <li>Tráfego pago não é custo. É alavanca de crescimento.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="service-card-highlight">Foco em ROI</div>
+          </div>
+        </div>
+
+        <!-- Inteligência de Dados -->
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="service-detailed-card">
+            <div class="service-card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21.21 15.89A10 10 0 1 1 8 2.83" />
+                <path d="M22 12A10 10 0 0 0 12 2v10z" />
+              </svg>
+            </div>
+            <div class="service-card-content">
+              <h3 class="service-card-title">Inteligência de Dados</h3>
+              <div class="service-card-text">
+                <ul class="service-topics">
+                  <li>Monitoramento constante, análise de métricas e decisões baseadas em performance real.</li>
+                  <li>Dados antes de decisões. Sempre.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="service-card-highlight">Data-Driven</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- ─────────────── CONTACT SECTION (Ninth Fold) ─────────────── -->
+  <section class="contact-section" id="contato">
+    <div class="ambient-bg" aria-hidden="true" style="position: absolute;">
+      <div class="orb orb-contact"
+        style="background: radial-gradient(circle, rgba(249, 115, 22, 0.15) 0%, transparent 70%); width: 60vw; height: 60vw; top: -20%; right: -10%;">
+      </div>
+    </div>
+
+    <div class="container contact-container">
+      <div class="contact-content">
+        <div class="promise-badge" id="contactBadge">
+          <span class="promise-badge-text">CONTATO</span>
+        </div>
+
+        <h1 class="contact-heading" id="contactHeading">
+          Vamos estruturar o <span class="text-accent">crescimento</span> da sua marca?
+        </h1>
+
+        <div class="contact-info" id="contactInfo">
+          <p class="contact-lead">
+            Se você busca mais do que presença digital, a <strong>ATHÊNIX DIGITAL</strong> é o parceiro certo.
+          </p>
+          <p class="contact-desc">
+            Somos uma Agência de marketing digital que pensa antes de executar, estrutura antes de escalar e analisa
+            antes de otimizar.
+            Transformamos marketing, publicidade e tecnologia em crescimento real.
+          </p>
+
+          <div class="contact-evolution">
+            <span class="evolution-tag">Onde estratégia encontra evolução</span>
+          </div>
+
+          <ul class="contact-list">
+            <li>
+              <span class="contact-icon">📩</span>
+              <span class="contact-text">Entre em contato</span>
+            </li>
+            <li>
+              <span class="contact-icon">📊</span>
+              <span class="contact-text">Solicite um diagnóstico estratégico</span>
+            </li>
+            <li>
+              <span class="contact-icon">🚀</span>
+              <span class="contact-text">Comece a evoluir no digital</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="contact-actions" id="contactActions">
+          <a href="https://wa.me/seunumerosaqui" class="btn-ds-wrapper btn-huge" id="contactPrimary">
+            <div class="btn-ds-bg" aria-hidden="true"></div>
+            <div class="btn-ds-corner btn-ds-tl" aria-hidden="true"></div>
+            <div class="btn-ds-corner btn-ds-br" aria-hidden="true"></div>
+            <div class="btn-ds-content">
+              Solicitar diagnóstico
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="7" y1="17" x2="17" y2="7"></line>
+                <polyline points="7 7 17 7 17 17"></polyline>
+              </svg>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Simplified Footer -->
+    <footer class="footer-simple">
+      <div class="footer-content">
+        <p>© 2026 ATHÊNIX DIGITAL. Todos os direitos reservados.</p>
+      </div>
+    </footer>
+  </section>
 
   <!-- ════════════════════════════════════════════════
      SCRIPTS
@@ -1096,8 +2645,189 @@
     }); // /DOMContentLoaded
 
     /* ────────────────────────────────────────────
-       5. NAVBAR — Scroll-aware transparency
+       5. PROMISE SECTION ANIMATIONS
     ──────────────────────────────────────────── */
+    const promiseTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '#compromisso',
+        start: 'top 70%',
+      }
+    });
+
+    promiseTl.fromTo('#promiseBadge',
+      { y: 30, opacity: 0, filter: 'blur(8px)' },
+      { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.8, ease: 'power3.out' }
+    )
+      .fromTo('#promiseHeading',
+        { y: 40, opacity: 0, filter: 'blur(10px)' },
+        { y: 0, opacity: 1, filter: 'blur(0px)', duration: 1, ease: 'power3.out' },
+        '-=0.5'
+      )
+      .fromTo('#promiseSub',
+        { y: 30, opacity: 0, filter: 'blur(8px)' },
+        { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.9, ease: 'power3.out' },
+        '-=0.6'
+      );
+
+    /* ────────────────────────────────────────────
+       6. SERVICES SECTION ANIMATIONS
+    ──────────────────────────────────────────── */
+    const servicesTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '#servicos',
+        start: 'top 70%',
+      }
+    });
+
+    servicesTl.fromTo('#servicesBadge',
+      { y: 30, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.6, ease: 'power2.out' }
+    )
+      .fromTo('#servicesHeading',
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' },
+        '-=0.4'
+      )
+      .fromTo('#servicesSub',
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' },
+        '-=0.6'
+      )
+      .fromTo('#servicesMedia',
+        { scale: 0.95, opacity: 0, filter: 'blur(10px)' },
+        { scale: 1, opacity: 1, filter: 'blur(0px)', duration: 1.2, ease: 'expo.out' },
+        '-=0.8'
+      )
+      .fromTo('.service-card',
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: 'power3.out' },
+        '-=0.6'
+      )
+      .fromTo('#servicesFooter',
+        { y: 30, opacity: 0, filter: 'blur(10px)' },
+        { y: 0, opacity: 1, filter: 'blur(0px)', duration: 1, ease: 'power3.out' },
+        '-=0.4'
+      );
+
+    /* ────────────────────────────────────────────
+       7. IMPACT SECTION ANIMATIONS
+    ──────────────────────────────────────────── */
+    const impactTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '#impacto',
+        start: 'top 70%',
+        onEnter: () => document.getElementById('impactHeading').classList.add('active')
+      }
+    });
+
+    impactTl.fromTo('#impactBadge',
+      { y: 30, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.6 }
+    )
+      .fromTo('#impactHeading',
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' },
+        '-=0.4'
+      )
+      .fromTo('.stat-item',
+        { y: 40, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: 'power3.out',
+          onComplete: () => {
+            document.querySelectorAll('.stat-number').forEach(el => {
+              const target = parseInt(el.getAttribute('data-target'));
+              const isPercent = el.innerText.includes('%');
+              const hasPlus = el.innerText.includes('+');
+
+              gsap.to(el, {
+                innerText: target,
+                duration: 2,
+                snap: { innerText: 1 },
+                ease: 'power1.out',
+                onUpdate: function () {
+                  el.innerText = (hasPlus ? '+' : '') + Math.ceil(el.innerText) + (isPercent ? '%' : '');
+                }
+              });
+            });
+          }
+        },
+        '-=0.5'
+      )
+      .fromTo('#impactQuote',
+        { y: 20, opacity: 0, filter: 'blur(10px)' },
+        { y: 0, opacity: 1, filter: 'blur(0px)', duration: 1, ease: 'power2.out' },
+        '-=0.3'
+      );
+
+    /* ────────────────────────────────────────────
+       8. ABOUT SECTION ANIMATIONS
+    ──────────────────────────────────────────── */
+    const aboutTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '#quem-somos',
+        start: 'top 60%',
+      }
+    });
+
+    aboutTl.fromTo('#aboutBadge',
+      { x: -30, opacity: 0 },
+      { x: 0, opacity: 1, duration: 0.8 }
+    )
+      .fromTo('#aboutHeading',
+        { x: -40, opacity: 0 },
+        { x: 0, opacity: 1, duration: 1, ease: 'power3.out' },
+        '-=0.5'
+      )
+      .fromTo('#aboutDescription p',
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, stagger: 0.15 },
+        '-=0.6'
+      )
+      .fromTo('#aboutMedia',
+        { x: 50, opacity: 0, scale: 1.1 },
+        { x: 0, opacity: 1, scale: 1, duration: 1.4, ease: 'expo.out' },
+        '-=1.2'
+      );
+
+    /* ────────────────────────────────────────────
+       9. CULTURE SECTION ANIMATIONS
+    ──────────────────────────────────────────── */
+    const cultureTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '#cultura',
+        start: 'top 75%',
+      }
+    });
+
+    cultureTl.fromTo('.culture-main-card',
+      { y: 50, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1.2, ease: 'expo.out' }
+    )
+      .fromTo('.culture-item',
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: 'power2.out' },
+        '-=0.8'
+      );
+
+    /* ────────────────────────────────────────────
+       10. PROJECT SECTION ANIMATIONS
+    ──────────────────────────────────────────── */
+    const projectTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '#projetos',
+        start: 'top 70%',
+      }
+    });
+
+    projectTl.fromTo('#projectMockup',
+      { y: 100, opacity: 0, scale: 0.95, rotateX: 10 },
+      { y: 0, opacity: 1, scale: 1, rotateX: 0, duration: 1.5, ease: 'expo.out' }
+    )
+      .fromTo('#projectInfo',
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, ease: 'power3.out' },
+        '-=1'
+      );
     ScrollTrigger.create({
       trigger: '#hero',
       start: 'top+=80 top',
@@ -1125,6 +2855,77 @@
     });
     magnetBtn.addEventListener('mouseleave', () => {
       gsap.to(magnetBtn, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1, 0.5)' });
+    });
+
+    /* ────────────────────────────────────────────
+       11. DETAILED SERVICES ANIMATIONS (Timeline)
+    ──────────────────────────────────────────── */
+    gsap.to('.detailed-services .section-header > *', {
+      scrollTrigger: {
+        trigger: '.detailed-services',
+        start: 'top 90%',
+      },
+      y: 0,
+      opacity: 1,
+      stagger: 0.1,
+      duration: 0.8,
+      ease: 'power2.out',
+      immediateRender: false
+    });
+
+    gsap.to('.timeline-item', {
+      scrollTrigger: {
+        trigger: '.services-timeline',
+        start: 'top 85%',
+      },
+      x: 0,
+      opacity: 1,
+      stagger: 0.15,
+      duration: 1,
+      ease: 'power3.out',
+      immediateRender: false
+    });
+
+    /* ────────────────────────────────────────────
+       12. CONTACT SECTION ANIMATIONS
+    ──────────────────────────────────────────── */
+    const contactTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '#contato',
+        start: 'top 75%',
+      }
+    });
+
+    contactTl.fromTo('#contactBadge',
+      { y: 30, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.6 }
+    )
+      .fromTo('#contactHeading',
+        { y: 40, opacity: 0, filter: 'blur(10px)' },
+        { y: 0, opacity: 1, filter: 'blur(0px)', duration: 1, ease: 'power3.out' },
+        '-=0.4'
+      )
+      .fromTo('#contactInfo',
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8 },
+        '-=0.6'
+      )
+      .fromTo('#contactActions',
+        { scale: 0.9, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.8, ease: 'back.out(1.7)' },
+        '-=0.4'
+      );
+
+    // Magnetic effect for the final CTA
+    const contactPrimary = document.getElementById('contactPrimary');
+    contactPrimary.addEventListener('mousemove', (e) => {
+      const rect = contactPrimary.getBoundingClientRect();
+      const dx = (e.clientX - rect.left - rect.width / 2) * 0.25;
+      const dy = (e.clientY - rect.top - rect.height / 2) * 0.25;
+      gsap.to(contactPrimary, { x: dx, y: dy, duration: 0.35, ease: 'power2.out' });
+    });
+    contactPrimary.addEventListener('mouseleave', () => {
+      gsap.to(contactPrimary, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1, 0.5)' });
     });
 
   </script>
