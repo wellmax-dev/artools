@@ -4,9 +4,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ARTools — Transformando Marcas em Máquinas de Vendas</title>
+  <title>ATHENIX — Transformando Marcas em Máquinas de Vendas</title>
   <meta name="description"
     content="Agência de marketing digital focada em crescimento previsível, performance e posicionamento de alto valor." />
+
+  <!-- ── Favicon ── -->
+  <link rel="icon" type="image/png" href="assets/rawfiles/faicon.png" />
+  <link rel="apple-touch-icon" href="assets/rawfiles/faicon.png" />
 
   <!-- ── Fonts ── -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -718,7 +722,7 @@
     /* ── Services Section (Third Fold) ── */
     .services-section {
       position: relative;
-      padding: 60px 5% 120px 5%;
+      padding: 40px 5% 80px 5%;
       background: var(--color-bg);
       overflow: hidden;
     }
@@ -731,9 +735,9 @@
     .services-top {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 80px;
+      gap: 40px;
       align-items: center;
-      margin-bottom: 100px;
+      margin-bottom: 60px;
     }
 
     .services-text {
@@ -910,6 +914,9 @@
     }
 
     @media (max-width: 640px) {
+      .services-section {
+        padding: 40px 5% 40px 5%;
+      }
       .services-grid {
         grid-template-columns: 1fr;
       }
@@ -922,7 +929,7 @@
     /* ── Impact Section (Fourth Fold) ── */
     .impact-section {
       position: relative;
-      padding: 100px 5% 140px 5%;
+      padding: 60px 5% 80px 5%;
       background: var(--color-bg);
       text-align: center;
       overflow: hidden;
@@ -1017,13 +1024,17 @@
     }
 
     @media (max-width: 640px) {
+      .impact-section {
+        padding: 40px 5% 40px 5%;
+      }
+
       .stats-grid {
         grid-template-columns: 1fr;
         gap: 48px;
       }
 
       .impact-heading {
-        margin-bottom: 60px;
+        margin-bottom: 40px;
       }
     }
 
@@ -1034,7 +1045,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 120px 5% 60px 5%;
+      padding: 80px 5% 40px 5%;
       background: var(--color-bg);
       text-align: center;
       overflow: hidden;
@@ -1076,6 +1087,22 @@
       max-width: 850px;
       margin-bottom: 24px;
       opacity: 0;
+    }
+
+    @media (max-width: 640px) {
+      .promise-section {
+        padding: 60px 5% 30px 5%;
+      }
+      .promise-heading {
+        font-size: 28px;
+      }
+      .promise-sub {
+        font-size: 14px;
+        margin-bottom: 32px;
+      }
+      .promise-label {
+        font-size: 20px;
+      }
     }
 
     .promise-heading .accent {
@@ -1142,7 +1169,7 @@
       background: var(--color-bg);
       display: flex;
       align-items: center;
-      padding: 80px 0;
+      padding: 40px 0;
       overflow: hidden;
     }
 
@@ -1153,7 +1180,7 @@
     }
 
     .about-text-content {
-      padding: 60px 8% 60px 10%;
+      padding: 40px 6% 40px 8%;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -1217,7 +1244,7 @@
       }
 
       .about-text-content {
-        padding: 80px 5%;
+        padding: 40px 5%;
         order: 2;
       }
 
@@ -1232,9 +1259,15 @@
 
     }
 
+    @media (max-width: 640px) {
+      .about-media {
+        height: 250px;
+      }
+    }
+
     /* ── Culture section (Sixth Fold) - Unified Layout ── */
     .culture-section {
-      padding: 100px 5%;
+      padding: 60px 5%;
       background: var(--color-bg);
       position: relative;
     }
@@ -1302,7 +1335,7 @@
     }
 
     .culture-item {
-      padding: 60px 50px;
+      padding: 40px 30px;
       display: flex;
       gap: 24px;
       transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
@@ -1394,9 +1427,38 @@
       border-radius: 50%;
     }
 
+    @media (max-width: 1024px) {
+      .culture-grid {
+        grid-template-columns: 1fr;
+      }
+      .culture-grid::before,
+      .culture-grid::after,
+      .culture-center-icon {
+        display: none;
+      }
+      .culture-item {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .culture-item:last-child {
+        border-bottom: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .culture-item {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 30px 20px;
+        gap: 16px;
+      }
+      .culture-values-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
     /* ── Projects Showcase (Seventh Fold) ── */
     .project-showcase {
-      padding: 0 5% 100px;
+      padding: 0 5% 60px;
       background: var(--color-bg);
       position: relative;
       text-align: center;
@@ -1408,7 +1470,7 @@
     }
 
     .project-header {
-      margin-bottom: 80px;
+      margin-bottom: 40px;
     }
 
     .project-mockup-wrapper {
@@ -1429,7 +1491,7 @@
     }
 
     .project-info-overlay {
-      margin-top: -100px;
+      margin-top: -60px;
       position: relative;
       z-index: 10;
       pointer-events: none;
@@ -1457,7 +1519,20 @@
       }
 
       .project-showcase {
-        padding: 80px 20px;
+        padding: 40px 20px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .project-title {
+        font-size: 28px;
+        margin-bottom: 16px;
+      }
+      .project-description {
+        font-size: 15px;
+      }
+      .project-info-overlay {
+        margin-top: -30px;
       }
     }
 
@@ -1468,7 +1543,7 @@
     }
 
     .detailed-services {
-      padding: 100px 5%;
+      padding: 60px 5%;
       background: var(--color-bg);
       position: relative;
       overflow: hidden;
@@ -1631,14 +1706,30 @@
     }
 
     @media (max-width: 1024px) {
-      .services-grid-detailed {
-        grid-template-columns: repeat(2, 1fr);
+      .services-timeline {
+        padding-left: 30px;
+      }
+      .timeline-marker {
+        left: -34px;
       }
     }
 
     @media (max-width: 768px) {
-      .services-grid-detailed {
-        grid-template-columns: 1fr;
+      .service-detailed-card {
+        flex-direction: column;
+        gap: 20px;
+        padding: 24px;
+      }
+      .service-card-icon {
+        margin-bottom: 8px;
+      }
+      .services-timeline {
+        padding-left: 20px;
+      }
+      .timeline-marker {
+        left: -24px;
+        width: 8px;
+        height: 8px;
       }
     }
 
@@ -1675,9 +1766,27 @@
     }
 
     @media (max-width: 640px) {
+      .hero-vignette {
+        background: linear-gradient(to right, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.6) 70%, transparent 100%);
+      }
       .hero-heading {
         font-size: 28px;
         line-height: 1.1;
+        margin-bottom: 16px;
+      }
+
+      .hero-sub {
+        font-size: 14px;
+        margin-bottom: 24px;
+      }
+
+      .hero-ctas {
+        width: 100%;
+      }
+
+      .btn-ds-wrapper {
+        width: 100%;
+        padding: 14px 20px;
       }
 
       .navbar {
@@ -1687,20 +1796,26 @@
 
       .hero-inner {
         padding: 0 20px;
+        margin-top: 20px;
       }
 
       .logo-img {
         height: 28px;
       }
+
+      .hero-partners {
+        gap: 12px;
+        margin-bottom: 32px;
+      }
     }
 
     /* ── Contact Section (Ninth Fold) ── */
     .contact-section {
-      padding: 160px 5% 80px;
+      padding: 100px 5% 60px;
       background: var(--color-bg);
       position: relative;
       overflow: hidden;
-      min-height: 100vh;
+      min-height: 80vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -1826,6 +1941,28 @@
         font-size: 18px;
       }
     }
+
+    @media (max-width: 640px) {
+      .contact-section {
+        padding: 60px 5% 40px;
+      }
+      .contact-heading {
+        font-size: 28px;
+        margin-bottom: 24px;
+      }
+      .contact-desc {
+        font-size: 14px;
+        margin-bottom: 32px;
+      }
+      .btn-huge {
+        padding: 16px 32px;
+        font-size: 16px;
+        width: 100%;
+      }
+      .footer-simple {
+        padding-top: 60px;
+      }
+    }
   </style>
 </head>
 
@@ -1840,15 +1977,16 @@
 
   <!-- ─────────────── NAVBAR ─────────────── -->
   <nav class="navbar" id="navbar" aria-label="Navegação principal">
-    <a href="#hero" class="navbar-logo" aria-label="ARTools — início">
+    <a href="#hero" class="navbar-logo" aria-label="ATHENIX — início">
       <img src="assets/rawfiles/ChatGPT%20Image%2018%20de%20fev.%20de%202026,%2000_23_47.png" alt="Logotipo"
         class="logo-img">
     </a>
 
     <div class="navbar-links" role="list">
       <a href="#hero" role="listitem">Início</a>
+      <a href="#quem-somos" role="listitem">Sobre</a>
       <a href="#servicos" role="listitem">Serviços</a>
-      <a href="#casos" role="listitem">Cases</a>
+      <a href="#projetos" role="listitem">Projetos</a>
       <a href="#contato" role="listitem">Contato</a>
     </div>
 
@@ -1942,15 +2080,7 @@
         <div class="hero-partners" id="heroPartners">
           <!-- Meta Partner -->
           <div class="partner-logo">
-            <svg class="partner-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M12.0001 8c-3.1539 0-5.8398 2.0307-6.7323 4.8697L3.0804 17.5108C2.5188 18.2598 1.4883 18.4116.7368 17.8596c-.7515-.552-.9165-1.5996-.3684-2.3484l2.5857-3.4476A8.0006 8.0006 0 0 1 12.0001 6.6667v1.3333zm0 8c3.1539 0 5.8398-2.0307 6.7323-4.8697l2.1873-4.6411c.5616-.749 1.5921-.9008 2.3436-.3488.7515.552.9165 1.5996.3684 2.3484l-2.5857 3.4476A8.0006 8.0006 0 0 1 12.0001 19.3333v-1.3333z"
-                fill-rule="evenodd" clip-rule="evenodd" />
-              <!-- Simplified infinity icon for Meta -->
-              <path
-                d="M7 10C5.34315 10 4 11.3431 4 13C4 14.6569 5.34315 16 7 16C8.03126 16 8.94073 15.4795 9.47565 14.6543L14.5243 9.34568C15.0593 8.52047 15.9687 8 17 8C18.6569 8 20 9.34315 20 11C20 12.6569 18.6569 14 17 14C15.9687 14 15.0593 13.4795 14.5243 12.6543"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-            </svg>
+            <img src="assets/rawfiles/facebook-meta-logo-icon-hd-png-701751694777703xqxtpvbu9q (1).png" alt="Meta Logo" class="partner-icon" style="object-fit: contain; width: auto;">
             <div class="partner-text">
               <span class="partner-text-primary">Meta</span>
               <span class="partner-text-secondary">Business</span>
@@ -1959,12 +2089,7 @@
 
           <!-- Google Partner -->
           <div class="partner-logo">
-            <svg class="partner-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <!-- Simplified G -->
-              <path
-                d="M11.9999 12.04v-2.34h5.45c0.05 0.38 0.08 0.77 0.08 1.18 0 3.75-2.52 6.42-5.53 6.42-3.4 0-6.15-2.76-6.15-6.15s2.75-6.15 6.15-6.15c1.67 0 3.09 0.62 4.19 1.66l-1.68 1.68c-0.49-0.47-1.33-1.02-2.51-1.02-2.2 0-3.99 1.83-3.99 4.07 0 2.24 1.79 4.07 3.99 4.07 1.8 0 3.19-1.01 3.65-2.42h-3.65z"
-                fill="currentColor" />
-            </svg>
+            <img src="assets/rawfiles/Logo-Google-G (3).png" alt="Google Logo" class="partner-icon" style="object-fit: contain; width: auto;">
             <div class="partner-text">
               <span class="partner-text-primary">Google</span>
               <span class="partner-text-secondary">SEO</span>
