@@ -535,81 +535,87 @@
     }
 
     .btn-ds-wrapper {
+      cursor: pointer;
       position: relative;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 16px 32px;
-      background: linear-gradient(135deg, #F97316 0%, #ea580c 100%);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 100px;
-      text-decoration: none;
-      cursor: pointer;
       overflow: hidden;
-      box-shadow: 
-        0 8px 24px rgba(249, 115, 22, 0.3),
-        inset 0 1px 1px rgba(255, 255, 255, 0.3),
-        inset 0 -2px 4px rgba(0, 0, 0, 0.2);
-      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      transition: all 0.25s ease;
+      background: radial-gradient(65.28% 65.28% at 50% 100%, rgba(251, 191, 36, 0.8) 0%, rgba(251, 191, 36, 0) 100%), linear-gradient(0deg, #ea580c, #ea580c);
+      border-radius: 9999px;
+      border: none;
+      padding: 14px 32px;
+      min-height: 48px;
+      text-decoration: none;
+      box-shadow: 0 4px 15px rgba(234, 88, 12, 0.3);
+    }
+
+    .btn-ds-wrapper::before {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      background: linear-gradient(177.95deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 100%);
+      border-radius: 9999px;
+      z-index: 0;
+    }
+
+    .btn-ds-wrapper::after {
+      content: "";
+      position: absolute;
+      inset: 2px;
+      background: radial-gradient(65.28% 65.28% at 50% 100%, rgba(251, 191, 36, 0.8) 0%, rgba(251, 191, 36, 0) 100%), linear-gradient(0deg, #ea580c, #ea580c);
+      border-radius: 9999px;
+      z-index: 0;
     }
 
     .btn-ds-wrapper:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 
-        0 12px 32px rgba(249, 115, 22, 0.5),
-        inset 0 1px 1px rgba(255, 255, 255, 0.4),
-        inset 0 -2px 4px rgba(0, 0, 0, 0.2);
-      border-color: rgba(255, 255, 255, 0.4);
-    }
-
-    .btn-ds-bg {
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 50%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-      transform: skewX(-20deg);
-      transition: none;
-      z-index: 1;
-    }
-
-    .btn-ds-wrapper:hover .btn-ds-bg {
-      animation: shimmer 0.8s forwards;
-    }
-
-    @keyframes shimmer {
-      100% {
-        left: 200%;
-      }
-    }
-
-    .btn-ds-corner {
-      display: none;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(234, 88, 12, 0.5);
     }
 
     .btn-ds-content {
+      z-index: 2;
+      gap: 8px;
       position: relative;
-      z-index: 5;
-      display: flex;
+      color: white;
+      display: inline-flex;
       align-items: center;
-      gap: 12px;
-      color: #ffffff;
+      justify-content: center;
       font-size: 15px;
       font-weight: 600;
       letter-spacing: 0.02em;
-      text-transform: uppercase;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-      transition: all 0.3s ease;
-      background: transparent;
-      border: none;
-      padding: 0;
-      margin: 0;
     }
 
-    .btn-ds-wrapper:hover .btn-ds-content {
-      color: #ffffff;
+    .points_wrapper {
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      left: 0;
     }
+
+    .points_wrapper .point {
+      bottom: -10px;
+      position: absolute;
+      animation: floating-points infinite ease-in-out;
+      pointer-events: none;
+      width: 2px;
+      height: 2px;
+      background-color: #fff;
+      border-radius: 9999px;
+    }
+
+    .points_wrapper .point:nth-child(1) { left: 10%; opacity: 1; animation-duration: 2.35s; animation-delay: 0.2s; }
+    .points_wrapper .point:nth-child(2) { left: 30%; opacity: 0.7; animation-duration: 2.5s; animation-delay: 0.5s; }
+    .points_wrapper .point:nth-child(3) { left: 25%; opacity: 0.8; animation-duration: 2.2s; animation-delay: 0.1s; }
+    .points_wrapper .point:nth-child(4) { left: 44%; opacity: 0.6; animation-duration: 2.05s; }
+    .points_wrapper .point:nth-child(5) { left: 50%; opacity: 1; animation-duration: 1.9s; }
+    .points_wrapper .point:nth-child(6) { left: 75%; opacity: 0.5; animation-duration: 1.5s; animation-delay: 1.5s; }
+    .points_wrapper .point:nth-child(7) { left: 88%; opacity: 0.9; animation-duration: 2.2s; animation-delay: 0.2s; }
 
     /* ── Scroll hint ── */
     .scroll-hint {
@@ -1981,11 +1987,11 @@
 
     <div class="navbar-cta">
       <!-- Fast action button in nav -->
-      <a href="https://wa.me/5511981152232?text=Ol%C3%A1%2C%20equipe%20ATHENIX%21%20%F0%9F%9A%80%20Acessei%20o%20site%20de%20voc%C3%AAs%20e%20estou%20pronto%20para%20transformar%20minha%20presen%C3%A7a%20digital%20em%20resultados%20reais.%20Podemos%20conversar%20sobre%20um%20diagn%C3%B3stico%20para%20o%20meu%20neg%C3%B3cio%3F" target="_blank" class="btn-ds-wrapper" id="navCta" style="padding: 10px 16px;">
-        <div class="btn-ds-bg" aria-hidden="true"></div>
-        <div class="btn-ds-corner btn-ds-tl" aria-hidden="true"></div>
-        <div class="btn-ds-corner btn-ds-br" aria-hidden="true"></div>
-        <div class="btn-ds-content" style="font-size: 11px;">
+      <a href="https://wa.me/5511981152232?text=Ol%C3%A1%2C%20equipe%20ATHENIX%21%20%F0%9F%9A%80%20Acessei%20o%20site%20de%20voc%C3%AAs%20e%20estou%20pronto%20para%20transformar%20minha%20presen%C3%A7a%20digital%20em%20resultados%20reais.%20Podemos%20conversar%20sobre%20um%20diagn%C3%B3stico%20para%20o%20meu%20neg%C3%B3cio%3F" target="_blank" class="btn-ds-wrapper" id="navCta" style="padding: 10px 20px; min-height: 40px;">
+        <div class="points_wrapper">
+          <i class="point"></i><i class="point"></i><i class="point"></i><i class="point"></i><i class="point"></i><i class="point"></i><i class="point"></i>
+        </div>
+        <div class="btn-ds-content" style="font-size: 12px;">
           Falar com Especialista
           <svg aria-hidden="true" class="iconify" data-icon="solar:arrow-right-up-bold-duotone" height="1em" role="img"
             viewBox="0 0 24 24" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 14px;">
@@ -2101,9 +2107,9 @@
         <!-- CTAs -->
         <div class="hero-ctas" id="heroCtas">
           <a href="https://wa.me/5511981152232?text=Ol%C3%A1%2C%20equipe%20ATHENIX%21%20%F0%9F%9A%80%20Acessei%20o%20site%20de%20voc%C3%AAs%20e%20estou%20pronto%20para%20transformar%20minha%20presen%C3%A7a%20digital%20em%20resultados%20reais.%20Podemos%20conversar%20sobre%20um%20diagn%C3%B3stico%20para%20o%20meu%20neg%C3%B3cio%3F" target="_blank" class="btn-ds-wrapper" id="ctaPrimary">
-            <div class="btn-ds-bg" aria-hidden="true"></div>
-            <div class="btn-ds-corner btn-ds-tl" aria-hidden="true"></div>
-            <div class="btn-ds-corner btn-ds-br" aria-hidden="true"></div>
+            <div class="points_wrapper">
+              <i class="point"></i><i class="point"></i><i class="point"></i><i class="point"></i><i class="point"></i><i class="point"></i><i class="point"></i>
+            </div>
             <div class="btn-ds-content">
               Solicitar Orçamento
               <svg aria-hidden="true" class="iconify" data-icon="solar:arrow-right-up-bold-duotone" height="1.2em"
@@ -2627,9 +2633,9 @@
 
         <div class="contact-actions" id="contactActions">
           <a href="https://wa.me/5511981152232?text=Ol%C3%A1%2C%20equipe%20ATHENIX%21%20%F0%9F%9A%80%20Acessei%20o%20site%20de%20voc%C3%AAs%20e%20estou%20pronto%20para%20transformar%20minha%20presen%C3%A7a%20digital%20em%20resultados%20reais.%20Podemos%20conversar%20sobre%20um%20diagn%C3%B3stico%20para%20o%20meu%20neg%C3%B3cio%3F" target="_blank" class="btn-ds-wrapper btn-huge" id="contactPrimary">
-            <div class="btn-ds-bg" aria-hidden="true"></div>
-            <div class="btn-ds-corner btn-ds-tl" aria-hidden="true"></div>
-            <div class="btn-ds-corner btn-ds-br" aria-hidden="true"></div>
+            <div class="points_wrapper">
+              <i class="point"></i><i class="point"></i><i class="point"></i><i class="point"></i><i class="point"></i><i class="point"></i><i class="point"></i>
+            </div>
             <div class="btn-ds-content">
               Solicitar diagnóstico
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
