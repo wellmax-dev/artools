@@ -539,64 +539,53 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 16px 24px;
-      border: 1px solid #262626;
-      background: transparent;
+      padding: 16px 32px;
+      background: linear-gradient(135deg, #F97316 0%, #ea580c 100%);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 100px;
       text-decoration: none;
       cursor: pointer;
-      transition: border-color 0.3s ease;
+      overflow: hidden;
+      box-shadow: 
+        0 8px 24px rgba(249, 115, 22, 0.3),
+        inset 0 1px 1px rgba(255, 255, 255, 0.3),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
     }
 
     .btn-ds-wrapper:hover {
-      border-color: #F97316;
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 
+        0 12px 32px rgba(249, 115, 22, 0.5),
+        inset 0 1px 1px rgba(255, 255, 255, 0.4),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+      border-color: rgba(255, 255, 255, 0.4);
     }
 
     .btn-ds-bg {
       position: absolute;
-      inset: 0;
-      opacity: 0;
-      background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjQ5LCAxMTUsIDIyLCAwLjIpIi8+PC9zdmc+");
-      transition: opacity 0.3s ease;
-      z-index: 0;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transform: skewX(-20deg);
+      transition: none;
+      z-index: 1;
     }
 
     .btn-ds-wrapper:hover .btn-ds-bg {
-      opacity: 1;
+      animation: shimmer 0.8s forwards;
+    }
+
+    @keyframes shimmer {
+      100% {
+        left: 200%;
+      }
     }
 
     .btn-ds-corner {
-      position: absolute;
-      width: 8px;
-      height: 8px;
-      opacity: 0;
-      transition: all 0.3s ease;
-      z-index: 2;
-    }
-
-    .btn-ds-tl {
-      top: 0;
-      left: 0;
-      border-top: 1px solid #F97316;
-      border-left: 1px solid #F97316;
-      transform: translate(-4px, -4px);
-    }
-
-    .btn-ds-wrapper:hover .btn-ds-tl {
-      opacity: 1;
-      transform: translate(0, 0);
-    }
-
-    .btn-ds-br {
-      bottom: 0;
-      right: 0;
-      border-bottom: 1px solid #F97316;
-      border-right: 1px solid #F97316;
-      transform: translate(4px, 4px);
-    }
-
-    .btn-ds-wrapper:hover .btn-ds-br {
-      opacity: 1;
-      transform: translate(0, 0);
+      display: none;
     }
 
     .btn-ds-content {
@@ -605,21 +594,21 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      color: var(--color-white);
-      font-size: 14px;
-      font-weight: 500;
-      letter-spacing: 0.05em;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
       text-transform: uppercase;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
       transition: all 0.3s ease;
       background: transparent;
       border: none;
-      padding: 8px 16px;
-      margin: -8px -16px;
+      padding: 0;
+      margin: 0;
     }
 
     .btn-ds-wrapper:hover .btn-ds-content {
-      color: #000;
-      background: #F97316;
+      color: #ffffff;
     }
 
     /* ── Scroll hint ── */
@@ -1784,7 +1773,7 @@
         width: 100%;
       }
 
-      .btn-ds-wrapper {
+      .hero-ctas .btn-ds-wrapper {
         width: 100%;
         padding: 14px 20px;
       }
@@ -2187,9 +2176,9 @@
             </svg>
             <span class="promise-badge-text">O QUE FAZEMOS</span>
           </div>
-          <h2 class="services-heading" id="servicesHeading">O que fazemos</h2>
+          <h2 class="services-heading" id="servicesHeading">Aqui, marketing é planejamento.</h2>
           <p class="services-sub" id="servicesSub">
-            Aqui, marketing é planejamento. Publicidade é performance. E cada ação nasce de análise real, não de
+            Publicidade é performance. E cada ação nasce de análise real, não de
             achismo.
           </p>
         </div>
